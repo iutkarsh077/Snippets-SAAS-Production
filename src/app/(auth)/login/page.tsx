@@ -1,87 +1,80 @@
 "use client";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { loginResolver, loginTypes } from "@/types/LoginTypes";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: loginResolver,
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Hii");
+  const SignInSubmit = (data: loginTypes) => {
+    console.log(data);
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-screen">
-      
+    <div className="flex flex-col lg:flex-row w-full h-auto">
+      {/* Left-side (hidden on small screens) */}
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
         className="hidden lg:flex w-full lg:w-2/5 bg-black items-center justify-center"
       >
-        <h1 className="text-white text-5xl md:text-7xl font-bold">SNIPPETS</h1>
+        <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold">
+          SNIPPETS
+        </h1>
       </motion.div>
 
-     
+      {/* Right-side (sign-up form) */}
       <motion.div
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full lg:w-3/5 lg:ml-36 lg:mr-20 p-6 sm:p-10 md:p-20 lg:p-32 flex flex-col justify-center"
+        className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Sign In
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          Sign up
         </h2>
-        <p className="text-gray-800 font-semibold mb-8">
-          Sign in to your account
+        <p className="text-gray-800 font-semibold text-sm sm:text-base">
+          Create a new account
         </p>
 
-        
-        <div className="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-4 mb-6">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex-1 flex items-center justify-center space-x-2 border border-gray-300 rounded-lg py-2 text-gray-500 bg-white transition duration-150 shadow-sm"
-          >
-            <FcGoogle size={24} />
-            <span>Sign in with Google</span>
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex-1 flex items-center justify-center space-x-2 border border-gray-300 rounded-lg py-2 text-gray-500 bg-white transition duration-150 shadow-sm"
-          >
-            <FaApple size={24} />
-            <span>Sign in with Apple</span>
-          </motion.button>
-        </div>
-
-        
+        {/* Form */}
         <form
-          onSubmit={handleSubmit}
-          className="space-y-6 shadow-sm bg-white p-6 sm:p-8 rounded-2xl"
+          onSubmit={handleSubmit(SignInSubmit)}
+          className="space-y-6 bg-white p-6 sm:p-8 rounded-2xl shadow-lg"
         >
+          {/* Username Field */}
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
-              Email Address
+              Username
             </label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username"
+              type="text"
+              {...register("username")}
               className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
-              placeholder="elonmusk@x.com"
-              required
+              placeholder="elonmusk"
             />
+            {errors.username?.message && (
+              <div className="text-red-500 pt-2">{errors.username.message}</div>
+            )}
           </div>
+
+          {/* Password Field */}
           <div>
             <label
               htmlFor="password"
@@ -92,13 +85,16 @@ export default function SignIn() {
             <input
               id="password"
               type="password"
-              value={password}
+              {...register("password")}
               placeholder="********"
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3  bg-gray-100  rounded-xl outline-none transition"
-              required
+              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
             />
+            {errors.password?.message && (
+              <div className="text-red-500 pt-2">{errors.password.message}</div>
+            )}
           </div>
+
+          {/* Forgot Password */}
           <div className="flex items-center justify-between text-sm">
             <a
               href="#"
@@ -107,21 +103,26 @@ export default function SignIn() {
               Forgot password?
             </a>
           </div>
+
+          {/* Submit Button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full bg-black text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition duration-150 font-semibold"
             type="submit"
           >
-            Sign In
+            Sign Up
           </motion.button>
         </form>
 
-       
-        <p className="mt-8 text-center text-sm font-semibold text-gray-600">
-          Don't have an account?{" "}
-          <Link href="/dashboard" className="text-blue-600 font-semibold hover:underline">
-            Second Page
+        {/* Link to second page */}
+        <p className="text-center text-sm font-semibold text-gray-600 mt-4">
+          Already have an account?{" "}
+          <Link
+            href="/dashboard"
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            Sign In
           </Link>
         </p>
       </motion.div>

@@ -2,12 +2,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 
-const UsernameValidation = z.object({
-    username: z.string().min(3, {
-        message: "Username is too small"
-    }).max(20, "Username must have atmost 20 characters")
-        .regex(/^[a-zA-Z0-9_]*$/, "Username must contain only letters, numbers and underscores")
-})
+const UsernameValidation = z.string().min(3, {
+    message: "Username is too small"
+}).max(20, "Username must have atmost 20 characters")
+    .regex(/^[a-zA-Z0-9_]*$/, "Username must contain only letters, numbers and underscores")
+
 
 
 const SchemaForLogin = z.object({

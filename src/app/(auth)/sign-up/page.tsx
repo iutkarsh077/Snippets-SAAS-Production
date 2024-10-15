@@ -1,12 +1,23 @@
 "use client";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { SignupResolver, signUpTypes } from "@/types/SignupTypes";
 import Link from "next/link";
+import { useDebounceCallback } from "usehooks-ts";
+import { useEffect, useState } from "react";
+import { CheckUsernameUnique } from "../../../../actions/CheckUsernameAvailable";
+import { Loader2 } from "lucide-react";
 
-export default function SignIn() {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+export default function SignUp() {
+  const [myusername, setMyUsername] = useState("");
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const debouncedUsername = useDebounceCallback(setMyUsername, 500);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: SignupResolver,
     defaultValues: {
       username: "",
@@ -15,6 +26,27 @@ export default function SignIn() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    const checkUsernameUnique = async () => {
+      if (myusername.length >= 3) {
+        setIsCheckingUsername(true);
+        setUsernameMessage("");
+        try {
+          const isUsernameAvailable = await CheckUsernameUnique(myusername);
+          if (isUsernameAvailable.status === false) {
+            throw new Error(isUsernameAvailable.message);
+          }
+          setUsernameMessage(isUsernameAvailable.message);
+        } catch (error: any) {
+          setUsernameMessage(error.message);
+        } finally {
+          setIsCheckingUsername(false);
+        }
+      }
+    };
+    checkUsernameUnique();
+  }, [myusername]);
 
   const SignupSubmit = (data: signUpTypes) => {
     console.log(data);
@@ -29,7 +61,9 @@ export default function SignIn() {
         transition={{ duration: 0.5 }}
         className="hidden lg:flex w-full lg:w-2/5 bg-black items-center justify-center"
       >
-        <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold">SNIPPETS</h1>
+        <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold">
+          SNIPPETS
+        </h1>
       </motion.div>
 
       {/* Right-side (sign-up form) */}
@@ -53,23 +87,42 @@ export default function SignIn() {
         >
           {/* Username Field */}
           <div>
-            <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="username"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Username
             </label>
             <input
               id="username"
               type="text"
               {...register("username")}
+              onChange={(e) => debouncedUsername(e.target.value)}
               className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
               placeholder="elonmusk"
-              
             />
-            {errors.username?.message && <div className="text-red-500 pt-2">{errors.username.message}</div>}
+            {isCheckingUsername && <Loader2 className="animate-spin mt-2" />}
+            <p
+              className={`text-sm ${
+                usernameMessage === "Username is available"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {usernameMessage}
+            </p>
+
+            {errors.username?.message && (
+              <div className="text-red-500 pt-2">{errors.username.message}</div>
+            )}
           </div>
 
           {/* Name Field */}
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Name
             </label>
             <input
@@ -78,14 +131,18 @@ export default function SignIn() {
               {...register("name")}
               className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
               placeholder="Elon Musk"
-              
             />
-            {errors.name?.message && <div className="text-red-500 pt-2">{errors.name.message}</div>}
+            {errors.name?.message && (
+              <div className="text-red-500 pt-2">{errors.name.message}</div>
+            )}
           </div>
 
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Email Address
             </label>
             <input
@@ -94,14 +151,18 @@ export default function SignIn() {
               {...register("email")}
               className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
               placeholder="elonmusk@x.com"
-              
             />
-            {errors.email?.message && <div className="text-red-500 pt-2">{errors.email.message}</div>}
+            {errors.email?.message && (
+              <div className="text-red-500 pt-2">{errors.email.message}</div>
+            )}
           </div>
 
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               Password
             </label>
             <input
@@ -110,14 +171,18 @@ export default function SignIn() {
               {...register("password")}
               placeholder="********"
               className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
-              
             />
-            {errors.password?.message && <div className="text-red-500 pt-2">{errors.password.message}</div>}
+            {errors.password?.message && (
+              <div className="text-red-500 pt-2">{errors.password.message}</div>
+            )}
           </div>
 
           {/* Forgot Password */}
           <div className="flex items-center justify-between text-sm">
-            <a href="#" className="text-blue-600 font-semibold hover:text-blue-800">
+            <a
+              href="#"
+              className="text-blue-600 font-semibold hover:text-blue-800"
+            >
               Forgot password?
             </a>
           </div>
@@ -136,7 +201,10 @@ export default function SignIn() {
         {/* Link to second page */}
         <p className="text-center text-sm font-semibold text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link href="/dashboard" className="text-blue-600 font-semibold hover:underline">
+          <Link
+            href="/dashboard"
+            className="text-blue-600 font-semibold hover:underline"
+          >
             Sign In
           </Link>
         </p>

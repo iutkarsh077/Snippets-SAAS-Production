@@ -7,6 +7,7 @@ import { useDebounceCallback } from "usehooks-ts";
 import { useEffect, useState } from "react";
 import { CheckUsernameUnique } from "../../../../actions/CheckUsernameAvailable";
 import { Loader2 } from "lucide-react";
+import { CreateUserAccount } from "../../../../actions/CreateUserAccount";
 
 export default function SignUp() {
   const [myusername, setMyUsername] = useState("");
@@ -16,6 +17,7 @@ export default function SignUp() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: SignupResolver,
@@ -48,8 +50,19 @@ export default function SignUp() {
     checkUsernameUnique();
   }, [myusername]);
 
-  const SignupSubmit = (data: signUpTypes) => {
+  const SignupSubmit =  async (data: signUpTypes) => {
     console.log(data);
+    try {
+      const res = await CreateUserAccount(data);
+      if(res.status === false){
+        throw new Error(res.msg);
+      }
+
+      console.log(res);
+     reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

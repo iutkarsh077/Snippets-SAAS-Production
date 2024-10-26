@@ -1,58 +1,58 @@
 "use client";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { loginResolver, loginTypes } from "@/types/LoginTypes";
 import LeftSideSnippet from "../_components/LeftSideSnippet";
+import { useForm } from "react-hook-form";
+import {
+  changePasswordTypes,
+  changePasswordResolver,
+} from "@/types/ChangePasswordTypes";
+import { ChangePasswordActions } from "../../../../actions/ChangePassword";
 import { useState } from "react";
-import ForgotPassword from "../_components/ForgotPassword";
-import { LoginUser } from "../../../../actions/LoginAction";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import VerifyEmail from "../_components/VerifyEmail";
-
-export default function SignIn() {
-  const [renderPassword, setRenderPassword] = useState(false);
-  const [renderVerifyEmail, setRenderVerifyEmail] = useState(false);
+const ChangePassword = ({userEmail}:{userEmail: string}) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: loginResolver,
+    resolver: changePasswordResolver,
     defaultValues: {
-      username: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const SignInSubmit = async (data: loginTypes) => {
-    console.log(data);
+  const VerifyEmailForgotPassword = async (data: changePasswordTypes) => {
+    if (data.password !== data.confirmPassword || !userEmail) {
+      return;
+    }
+    setLoading(true)
     try {
-      const res = await LoginUser(data);
+        const userData = {
+            confirmPassword: data.confirmPassword,
+            password: data.password,
+            email: userEmail
+        }
+      const res = await ChangePasswordActions(userData);
       if (res.status === false) {
         throw new Error(res.msg);
       }
-
-      router.push("/");
+      router.push("/sign-up");
     } catch (error) {
       console.log(error);
     }
+    finally{
+        setLoading(false);
+    }
   };
-
-  if (renderPassword) {
-    return <ForgotPassword />;
-  }
-
-  if(renderVerifyEmail){
-    return <VerifyEmail/>
-  }
   return (
     <div className="flex flex-col lg:flex-row w-full h-auto min-h-screen">
-      {/* Left-side (hidden on small screens) */}
       <LeftSideSnippet />
 
-      {/* Right-side (sign-up form) */}
       <motion.div
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -60,82 +60,72 @@ export default function SignIn() {
         className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          Sign In
+          Reset Password
         </h2>
         <p className="text-gray-800 font-semibold text-sm sm:text-base">
-          Welcome back
+          Change your Password here
         </p>
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit(SignInSubmit)}
+          onSubmit={handleSubmit(VerifyEmailForgotPassword)}
           className="space-y-6 bg-white p-6 sm:p-8 rounded-2xl shadow-lg"
         >
-          {/* Username Field */}
           <div>
             <div className="flex justify-between">
               <label
                 htmlFor="username"
                 className="block text-sm font-semibold text-gray-700 mb-2"
               >
-                Username/Email
+                Password
               </label>
-              <p className="text-sm font-semibold text-blue-500 hover:cursor-pointer hover:text-blue-700 hover:scale-x-105 hover:transition-all hover:ease-in-out mb-2" onClick={()=>setRenderVerifyEmail(true)}>
-                Verify Email
-              </p>
             </div>
             <input
-              id="username"
-              type="text"
-              {...register("username")}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
-              placeholder="elonmusk"
-            />
-            {errors.username?.message && (
-              <div className="text-red-500 pt-2">{errors.username.message}</div>
-            )}
-          </div>
-
-          {/* Password Field */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-2"
-            >
-              Password
-            </label>
-            <input
               id="password"
-              type="password"
+              type="text"
               {...register("password")}
-              placeholder="********"
-              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              placeholder="elonmusk@gmail.com"
             />
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>
             )}
           </div>
 
-          {/* Forgot Password */}
-          <div
-            className="flex items-center justify-between text-sm hover:cursor-pointer text-blue-500 font-semibold hover:text-blue-700"
-            onClick={() => setRenderPassword(true)}
-          >
-            Forgot password?
+          {/* Password Field */}
+          <div>
+            <label
+              htmlFor="otp"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Confirm Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="confirmPassword"
+              {...register("confirmPassword")}
+              placeholder="********"
+              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+            />
+            {errors.confirmPassword?.message && (
+              <div className="text-red-500 pt-2">
+                {errors.confirmPassword.message}
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full bg-black text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition duration-150 font-semibold"
+            className="w-full bg-black text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition duration-150 font-semibold flex items-center"
             type="submit"
           >
-            Sign Up
+            {loading && <Loader2 className="animate-spin" />}
+            Change Password
           </motion.button>
         </form>
 
-        {/* Link to second page */}
         <p className="text-center text-sm font-semibold text-gray-600 mt-4">
           Dont have an account?{" "}
           <Link
@@ -148,4 +138,6 @@ export default function SignIn() {
       </motion.div>
     </div>
   );
-}
+};
+
+export default ChangePassword;

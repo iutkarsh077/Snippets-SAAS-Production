@@ -8,12 +8,15 @@ import { useEffect, useState } from "react";
 import { CheckUsernameUnique } from "../../../../actions/CheckUsernameAvailable";
 import { Loader2 } from "lucide-react";
 import { CreateUserAccount } from "../../../../actions/CreateUserAccount";
+import LeftSideSnippet from "../_components/LeftSideSnippet";
+import OtpForSignup from "../_components/OtpForSignup";
 
 export default function SignUp() {
   const [myusername, setMyUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const debouncedUsername = useDebounceCallback(setMyUsername, 500);
+  const [renderOtpForSignup, setRenderOtpForSignup] = useState(false);
   const {
     register,
     handleSubmit,
@@ -50,35 +53,30 @@ export default function SignUp() {
     checkUsernameUnique();
   }, [myusername]);
 
-  const SignupSubmit =  async (data: signUpTypes) => {
+  const SignupSubmit = async (data: signUpTypes) => {
     console.log(data);
     try {
       const res = await CreateUserAccount(data);
-      if(res.status === false){
+      if (res.status === false) {
         throw new Error(res.msg);
       }
+      setRenderOtpForSignup(true);
+      // console.log(res);
 
-      console.log(res);
-     reset();
+      reset();
     } catch (error) {
       console.log(error);
     }
   };
 
+  if(renderOtpForSignup){
+    return <OtpForSignup username={myusername}/>
+  }
+
   return (
     <div className="flex flex-col lg:flex-row w-full h-auto">
       {/* Left-side (hidden on small screens) */}
-      <motion.div
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="hidden lg:flex w-full lg:w-2/5 bg-black items-center justify-center"
-      >
-        <h1 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold">
-          SNIPPETS
-        </h1>
-      </motion.div>
-
+      <LeftSideSnippet />
       {/* Right-side (sign-up form) */}
       <motion.div
         initial={{ x: 100, opacity: 0 }}
@@ -215,7 +213,7 @@ export default function SignUp() {
         <p className="text-center text-sm font-semibold text-gray-600 mt-4">
           Already have an account?{" "}
           <Link
-            href="/dashboard"
+            href="/login"
             className="text-blue-600 font-semibold hover:underline"
           >
             Sign In

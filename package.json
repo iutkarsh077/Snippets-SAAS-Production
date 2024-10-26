@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm .next -r && next dev"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
@@ -14,6 +15,8 @@
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/switch": "^2.0.34",
     "@prisma/client": "^5.20.0",
+    "@radix-ui/react-avatar": "^1.1.1",
+    "@radix-ui/react-separator": "^1.1.0",
     "@react-email/components": "^0.0.25",
     "@react-email/render": "^1.0.1",
     "@types/bcryptjs": "^2.4.6",

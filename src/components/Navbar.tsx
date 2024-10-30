@@ -143,25 +143,22 @@ export default function Navbar() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-indigo-700"
+          className="md:hidden  text-white"
         >
-          <ul className="flex flex-col items-center space-y-4 py-4">
-            {navLinks.map((link, index) => (
-              <motion.li
+          <div className="flex flex-col items-center  space-y-4 py-4">
+            {navLinks.map((link: any, index: number) => (
+              <p
                 key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <Link
                   href={link.href}
-                  className="text-white text-lg font-medium hover:text-indigo-300"
+                  className="text-white text-lg font-medium"
                 >
                   {link.name}
                 </Link>
-              </motion.li>
+              </p>
             ))}
-          </ul>
+          </div>
         </motion.div>
       )}
     </motion.nav>

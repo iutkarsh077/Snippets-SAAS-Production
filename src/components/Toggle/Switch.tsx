@@ -30,9 +30,9 @@ export default function SwitchToggle() {
       color="secondary"
       thumbIcon={({ isSelected, className }) =>
         isSelected ? (
-          <SunIcon className={className} />
+          <SunIcon />
         ) : (
-          <MoonIcon className={className} />
+          <MoonIcon />
         )
       }
     ></Switch>

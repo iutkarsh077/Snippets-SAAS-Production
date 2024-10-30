@@ -33,7 +33,9 @@ export async function LoginUser(data: any) {
         }
 
 
-        let token = jwt.sign({ name: findUser.name, email: findUser.email, verified: findUser.verified }, process.env.JWT_SECRET!, { expiresIn: '10d' });
+        let token = jwt.sign({
+            id: findUser.id, name: findUser.name, email: findUser.email, verified: findUser.verified
+        }, process.env.JWT_SECRET!, { expiresIn: '10d' });
 
         const cookieStore = cookies();
         const cookie = cookieStore.set('snippets', token, { httpOnly: true, sameSite: 'lax', expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000) });

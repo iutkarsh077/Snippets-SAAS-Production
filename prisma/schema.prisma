@@ -14,13 +14,55 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   username        String
   email           String
   password        String
+  backgroundImage String      @default("")
+  profileImage    String      @default("")
+  about           String      @default("")
+  workplace       String      @default("")
+  location        String      @default("")
+  badges          String[]
+  snippetPosts    PostSnippet[]
+  comments        Comment[]
+  chats           Chat[]
   verificationOtp String
-  verified        Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  verified        Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model PostSnippet {
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  programmingLanguage String
+  code                String
+  question            String?
+  author              User      @relation(fields: [authorId], references: [id])
+  authorId            String    @db.ObjectId
+  comments            Comment[] @relation("SnippetComments")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model Comment {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  post      PostSnippet @relation(fields: [postId], references: [id], name: "SnippetComments")
+  postId    String      @db.ObjectId
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String      @db.ObjectId
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Chat {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  sender     User     @relation(fields: [senderId], references: [id])
+  senderId   String   @db.ObjectId
+  receiverId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

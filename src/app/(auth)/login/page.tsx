@@ -27,7 +27,7 @@ export default function SignIn() {
   });
 
   const SignInSubmit = async (data: loginTypes) => {
-    console.log(data);
+    // console.log(data);
     try {
       const res = await LoginUser(data);
       if (res.status === false) {

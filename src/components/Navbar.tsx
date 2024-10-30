@@ -17,7 +17,7 @@ export default function Navbar() {
     const getUserDetails = async () =>{
       try {
         const res = await GetUserDetails();
-        console.log(res);
+        // console.log(res);
         if(res.status === false){
           throw new Error(res.msg);
         }
@@ -94,7 +94,7 @@ export default function Navbar() {
             >
               <IoCloudUpload className="text-2xl font-semibold" />
             </Link>
-            {/* <SwitchToggle /> */}
+            <SwitchToggle />
             {userDetails ? (
               <Link href={`/profile`} className="font-semibold">
                 <div>{userDetails.name}</div>

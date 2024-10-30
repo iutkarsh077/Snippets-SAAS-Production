@@ -14,14 +14,14 @@ export default function CodeCard({ snippet }: any) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const truncateWord = (code: string, length :number) =>{
-    if(code.length <= 300) return code;
+  const truncate = (text: string, length: number) => {
+    if (text.length <= length) {
+      return text;
+    }
+    return text.slice(0, length) + "...";
+  };
 
-    return code.slice(0, 300);
-  }
-
-  const trimSentence = truncateWord(snippet.code, 200);
-
+  const truncatedCode = truncate(snippet.code.trim(), 300);
   return (
     <>
       <motion.div
@@ -51,7 +51,6 @@ export default function CodeCard({ snippet }: any) {
             <SyntaxHighlighter
               language={snippet.programmingLanguage}
               style={atomDark}
-              class="example"
               customStyle={{
                 margin: 0,
                 padding: "16px",
@@ -60,8 +59,9 @@ export default function CodeCard({ snippet }: any) {
                 cursor: "pointer",
                 height: "100%",
               }}
+              class="example"
             >
-              {trimSentence}
+              {truncatedCode}
             </SyntaxHighlighter>
           </Link>
         </div>

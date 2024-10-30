@@ -54,7 +54,7 @@ export default function SignUp() {
   }, [myusername]);
 
   const SignupSubmit = async (data: signUpTypes) => {
-    console.log(data);
+    // console.log(data);
     try {
       const res = await CreateUserAccount(data);
       if (res.status === false) {

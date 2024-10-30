@@ -6,6 +6,8 @@ export const MoonIcon = (props: any) => (
       role="presentation"
       viewBox="0 0 24 24"
       width="1em"
+      className="text-black"
+
       {...props}
     >
       <path

@@ -59,10 +59,10 @@ const ChangePassword = ({userEmail}:{userEmail: string}) => {
         transition={{ duration: 0.5 }}
         className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl sm:text-4xl dark:text-white md:text-5xl font-bold text-gray-800 mb-4">
           Reset Password
         </h2>
-        <p className="text-gray-800 font-semibold text-sm sm:text-base">
+        <p className="text-gray-800 dark:text-white font-semibold text-sm sm:text-base">
           Change your Password here
         </p>
 
@@ -84,7 +84,7 @@ const ChangePassword = ({userEmail}:{userEmail: string}) => {
               id="password"
               type="text"
               {...register("password")}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 rounded-xl outline-none dark:text-black bg-gray-100 transition"
               placeholder="elonmusk@gmail.com"
             />
             {errors.password?.message && (
@@ -105,7 +105,7 @@ const ChangePassword = ({userEmail}:{userEmail: string}) => {
               type="confirmPassword"
               {...register("confirmPassword")}
               placeholder="********"
-              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+              className="w-full px-4 py-3 bg-gray-100 dark:text-black rounded-xl outline-none transition"
             />
             {errors.confirmPassword?.message && (
               <div className="text-red-500 pt-2">

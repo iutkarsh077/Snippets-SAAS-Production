@@ -13,8 +13,11 @@ import CodeCard from "@/app/(home)/_components/Card";
 import { SnippetType } from "@/app/snippets/page";
 import { GetAllSnippets } from "../../../../actions/GetAllSnippets";
 import { GetUserDetailsInProfile } from "../../../../actions/GetUserDetailsInProfile";
+import { LogoutUser } from "../../../../actions/LogoutUser";
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenforCover, setIsOpenForCover] = useState(false);
   const [profileImage, setProfileImage] = useState("");
@@ -66,6 +69,11 @@ export default function Profile() {
     };
     fetchUserDetails();
   }, [dialogOpen]);
+
+  const handleLogout = async () => {
+    await LogoutUser();
+    window.location.reload();
+  };
 
   if (loading) {
     return (
@@ -144,6 +152,7 @@ export default function Profile() {
                 dialogOpen={dialogOpen}
                 setDialogOpen={setDialogOpen}
               />
+              {about && <Button onClick={handleLogout}>Logout</Button>}
             </div>
           </div>
 

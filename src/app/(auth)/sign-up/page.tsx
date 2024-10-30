@@ -84,10 +84,10 @@ export default function SignUp() {
         transition={{ duration: 0.5 }}
         className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl dark:text-white sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
           Sign up
         </h2>
-        <p className="text-gray-800 font-semibold text-sm sm:text-base">
+        <p className="text-gray-800 dark:text-white pb-3 font-semibold text-sm sm:text-base">
           Create a new account
         </p>
 
@@ -109,7 +109,7 @@ export default function SignUp() {
               type="text"
               {...register("username")}
               onChange={(e) => debouncedUsername(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 dark:text-black rounded-xl outline-none bg-gray-100 transition"
               placeholder="elonmusk"
             />
             {isCheckingUsername && <Loader2 className="animate-spin mt-2" />}
@@ -140,7 +140,7 @@ export default function SignUp() {
               id="name"
               type="text"
               {...register("name")}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 dark:text-black rounded-xl outline-none bg-gray-100 transition"
               placeholder="Elon Musk"
             />
             {errors.name?.message && (
@@ -160,7 +160,7 @@ export default function SignUp() {
               id="email"
               type="email"
               {...register("email")}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 dark:text-black rounded-xl outline-none bg-gray-100 transition"
               placeholder="elonmusk@x.com"
             />
             {errors.email?.message && (
@@ -181,7 +181,7 @@ export default function SignUp() {
               type="password"
               {...register("password")}
               placeholder="********"
-              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+              className="w-full px-4 py-3 dark:text-black bg-gray-100 rounded-xl outline-none transition"
             />
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>

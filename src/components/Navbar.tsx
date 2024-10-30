@@ -1,5 +1,5 @@
-"use client"
-import {  useEffect, useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SwitchToggle from "@/components/Toggle/Switch";
 import { IoCloudUpload } from "react-icons/io5";
@@ -7,27 +7,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GetUserDetails } from "../../actions/GetUserDetails";
 
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userDetails, setUserDetails] = useState<any>(null);
   const path = usePathname();
-  
-  useEffect(()=>{
-    const getUserDetails = async () =>{
+
+  useEffect(() => {
+    const getUserDetails = async () => {
       try {
         const res = await GetUserDetails();
         // console.log(res);
-        if(res.status === false){
+        if (res.status === false) {
           throw new Error(res.msg);
         }
         setUserDetails(res.decodeCookieValue);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     getUserDetails();
-  }, [])
+  }, []);
 
   const navLinks = [
     { name: "Dashboard", href: "/" },
@@ -86,14 +85,14 @@ export default function Navbar() {
             ))}
           </div>
           <div className="flex items-center gap-x-5">
-            <Link
-              href="/uploadSnippets"
-              className={`${
-                path === "/snippets" ? "block" : "hidden"
-              }`}
-            >
-              <IoCloudUpload className="text-2xl font-semibold" />
-            </Link>
+            {userDetails && (
+              <Link
+                href="/uploadSnippets"
+                className={`${path === "/snippets" ? "block" : "hidden"}`}
+              >
+                <IoCloudUpload className="text-2xl font-semibold" />
+              </Link>
+            )}
             <SwitchToggle />
             {userDetails ? (
               <Link href={`/profile`} className="font-semibold">
@@ -145,11 +144,9 @@ export default function Navbar() {
           transition={{ duration: 0.3 }}
           className="md:hidden  text-white"
         >
-          <div className="flex flex-col items-center  space-y-4 py-4">
+          <div className="flex flex-col items-center space-y-4 py-4">
             {navLinks.map((link: any, index: number) => (
-              <p
-                key={index}
-              >
+              <p key={index}>
                 <Link
                   href={link.href}
                   className="text-white text-lg font-medium"

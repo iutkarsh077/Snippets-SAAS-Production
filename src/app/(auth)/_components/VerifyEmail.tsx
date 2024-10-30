@@ -76,12 +76,10 @@ const VerifyEmail = () => {
         transition={{ duration: 0.5 }}
         className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          Forgot Password
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold dark:text-white text-gray-800 mb-4">
+          Verify Email
         </h2>
-        <p className="text-gray-800 font-semibold text-sm sm:text-base">
-          Recover your Password
-        </p>
+        
 
         {/* Form */}
         <form
@@ -109,7 +107,7 @@ const VerifyEmail = () => {
               type="text"
               {...register("email")}
               onChange={(e) => setUserEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 rounded-xl outline-none dark:text-black bg-gray-100 transition"
               placeholder="elonmusk@gmail.com"
             />
             {errors.email?.message && (
@@ -130,7 +128,7 @@ const VerifyEmail = () => {
               type="otp"
               {...register("otp")}
               placeholder="872872"
-              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+              className="w-full px-4 py-3 dark:text-black bg-gray-100 rounded-xl outline-none transition"
             />
             {errors.otp?.message && (
               <div className="text-red-500 pt-2">{errors.otp.message}</div>

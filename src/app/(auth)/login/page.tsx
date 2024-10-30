@@ -59,7 +59,7 @@ export default function SignIn() {
         transition={{ duration: 0.5 }}
         className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
           Sign In
         </h2>
         <p className="text-gray-800 font-semibold text-sm sm:text-base">
@@ -88,7 +88,7 @@ export default function SignIn() {
               id="username"
               type="text"
               {...register("username")}
-              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 transition"
+              className="w-full px-4 py-3 rounded-xl outline-none bg-gray-100 dark:text-black transition"
               placeholder="elonmusk"
             />
             {errors.username?.message && (
@@ -109,7 +109,7 @@ export default function SignIn() {
               type="password"
               {...register("password")}
               placeholder="********"
-              className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none transition"
+              className="w-full px-4 py-3 bg-gray-100 dark:text-black rounded-xl outline-none transition"
             />
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>
@@ -131,7 +131,7 @@ export default function SignIn() {
             className="w-full bg-black text-white py-3 px-4 rounded-xl hover:bg-gray-800 transition duration-150 font-semibold"
             type="submit"
           >
-            Sign Up
+            Login
           </motion.button>
         </form>
 

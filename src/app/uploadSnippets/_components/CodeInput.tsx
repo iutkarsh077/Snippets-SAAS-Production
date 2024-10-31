@@ -122,7 +122,7 @@ export default function CodeCard({
             onClick={handleSubmit}
             className={`
         inline-flex items-center mt-5 justify-center px-6 py-3
-        bg-primary text-white
+        bg-primary text-white dark:text-black
         rounded-full font-semibold text-lg
         shadow-md hover:shadow-lg
         transition-colors duration-200

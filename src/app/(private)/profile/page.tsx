@@ -152,7 +152,7 @@ export default function Profile() {
                 dialogOpen={dialogOpen}
                 setDialogOpen={setDialogOpen}
               />
-              {about && <Button onClick={handleLogout}>Logout</Button>}
+              {name && <Button onClick={handleLogout}>Logout</Button>}
             </div>
           </div>
 

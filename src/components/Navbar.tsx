@@ -98,7 +98,7 @@ export default function Navbar() {
             </p>
             <div className="hidden md:block">
               {userDetails ? (
-                <Link href={`/profile`} className="font-semibold">
+                <Link href={`/profile`} className="font-semibold dark:text-white text-black">
                   <div>{userDetails.name}</div>
                 </Link>
               ) : (
@@ -162,7 +162,7 @@ export default function Navbar() {
             ))}
             <div className="block pt-2 md:hidden">
               {userDetails ? (
-                <Link href={`/profile`} className="font-semibold">
+                <Link href={`/profile`} className="font-semibold dark:text-white text-black">
                   <div>{userDetails.name}</div>
                 </Link>
               ) : (

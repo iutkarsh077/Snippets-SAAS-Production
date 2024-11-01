@@ -62,7 +62,7 @@ export default function SignIn() {
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
           Sign In
         </h2>
-        <p className="text-gray-800 font-semibold text-sm sm:text-base">
+        <p className="text-gray-800 dark:text-white pb-2 font-semibold text-sm sm:text-base">
           Welcome back
         </p>
 

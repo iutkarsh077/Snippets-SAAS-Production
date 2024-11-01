@@ -56,7 +56,7 @@ const UserChat = () => {
   }, [loadingDelete]);
 
   return (
-    <div className="mt-16 ml-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="mt-16 xl:ml-20 w-full ml-2 pr-3 xl:pr-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {userChat
         ?.sort((a: { createdAt: any }, b: { createdAt: any }) => {
           return (

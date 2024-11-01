@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers';
 
 export const config = {
-  matcher: ["/", '/profile', '/uploadSnippets', '/userChat'],
+  matcher: ["/", '/profile', '/uploadSnippets', '/description/:path*', '/userChat'],
 }
 
 // '/profile/:path*'
@@ -17,6 +17,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!getUserCookie && url.pathname.startsWith("/uploadSnippets")) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (!getUserCookie && url.pathname.startsWith("/description")) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

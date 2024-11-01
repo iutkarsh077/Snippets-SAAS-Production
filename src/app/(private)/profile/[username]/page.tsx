@@ -5,20 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import CustomDialog from "./_components/CustomDialog";
-import CustomDialogForProfileImage from "./_components/CustomDialogProfileImage";
-import DialogForOtherSections from "./_components/DialogForOtherSection";
 import CodeCard from "@/app/(home)/_components/Card";
 import { SnippetType } from "@/app/snippets/page";
-import { GetUserDetailsInProfile } from "../../../../actions/GetUserDetailsInProfile";
-import { LogoutUser } from "../../../../actions/LogoutUser";
-import { useParams, useRouter } from "next/navigation";
-import { GetPostForProfile } from "../../../../actions/GetParticularUserPost";
-import { GetUserDetails } from "../../../../actions/GetUserDetails";
+import { useParams } from "next/navigation";
+import { GetDetailsForPublicProfile } from "../../../../../actions/GetUsrDetailsForPublicProfile";
+import { GetPostForPublicProfile } from "../../../../../actions/GetPostForPublicProfile";
 
-export default function Profile() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenforCover, setIsOpenForCover] = useState(false);
+export default function PublicProfile() {
+  const { username } = useParams();
   const [profileImage, setProfileImage] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [name, setName] = useState("");
@@ -32,24 +26,17 @@ export default function Profile() {
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
 
-  useEffect(() => {
-    const getAllSnippetsForProfile = async () => {
-      setLoading(true);
-      const res = await GetPostForProfile();
-      if (res && res.data) {
-        setSnippets(res.data as any);
-        // console.log(res);
-      }
-      setLoading(false);
-    };
-    getAllSnippetsForProfile();
-  }, []);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       setLoading(true);
       try {
-        const res = await GetUserDetailsInProfile();
+        const res = await GetDetailsForPublicProfile(username as string);
+        const res2 = await GetPostForPublicProfile(username as string);
+        if (res2 && res2.data) {
+          setSnippets(res2.data as any);
+          // console.log(res2);
+        }
         if (res.status === false) {
           throw new Error(res.msg);
         }
@@ -71,11 +58,6 @@ export default function Profile() {
     fetchUserDetails();
   }, [dialogOpen]);
 
-  const handleLogout = async () => {
-    await LogoutUser();
-    window.location.reload();
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen overflow-hidden">
@@ -94,13 +76,6 @@ export default function Profile() {
       >
         {/* Banner Image */}
         <div className="h-48 overflow-hidden relative rounded-t-lg">
-          <div className="absolute right-4 top-2">
-            <CustomDialog
-              isOpenforCover={isOpenforCover}
-              setIsOpenForCover={setIsOpenForCover}
-              setCoverImage={setCoverImage}
-            />
-          </div>
           <Image
             src={
               coverImage ||
@@ -115,13 +90,6 @@ export default function Profile() {
 
         {/* Profile Picture */}
         <div className="relative flex -mt-16 mb-4 ml-3">
-          <p className="absolute left-28 bottom-0">
-            <CustomDialogForProfileImage
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              setProfileImage={setProfileImage}
-            />
-          </p>
           <Image
             src={
               profileImage ||
@@ -148,13 +116,6 @@ export default function Profile() {
               <p className="text-muted-foreground">{userName}</p>
               <p className="text-muted-foreground">{workplace}</p>
               <p className="text-sm text-muted-foreground mt-1">{location}</p>
-            </div>
-           <div className="flex items-center gap-2 hover:cursor-pointer p-2 text-white rounded-md">
-              <DialogForOtherSections
-                dialogOpen={dialogOpen}
-                setDialogOpen={setDialogOpen}
-              />
-              {name && <Button onClick={handleLogout}>Logout</Button>}
             </div>
           </div>
 

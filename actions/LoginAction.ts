@@ -34,7 +34,7 @@ export async function LoginUser(data: any) {
 
 
         let token = jwt.sign({
-            id: findUser.id, name: findUser.name, email: findUser.email, verified: findUser.verified
+            id: findUser.id, name: findUser.name, email: findUser.email, verified: findUser.verified, username: findUser.username
         }, process.env.JWT_SECRET!, { expiresIn: '10d' });
 
         const cookieStore = cookies();

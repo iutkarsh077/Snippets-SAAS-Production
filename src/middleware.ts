@@ -5,6 +5,8 @@ import { cookies } from 'next/headers';
 export const config = {
   matcher: ["/", '/profile', '/uploadSnippets', '/userChat'],
 }
+
+// '/profile/:path*'
 export async function middleware(request: NextRequest) {
   const cookie = cookies();
   const getUserCookie = cookie.get("snippets")?.value;

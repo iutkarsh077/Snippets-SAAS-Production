@@ -41,6 +41,7 @@ export default function OneSnippet() {
   const [commentSendLoading, setCommentSendLoading] = useState(false);
   const [userId, setUserId] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function OneSnippet() {
 
         setUserId(userId.decodeCookieValue?.id);
         setSinglePost(res.data as any);
+        setUsername(res.data?.author.username as string);
         setShowComment(res.data!.comments);
         // console.log(res);
       } catch (error: any) {
@@ -150,14 +152,14 @@ export default function OneSnippet() {
             >
               <div className="p-6 w-full">
                 <div className="h-10 w-full mb-6 flex justify-around">
-                  <div className="h-10 w-full flex items-center">
+                  <Link href={`/profile/${username}`} className="h-10 w-full flex items-center">
                     <span className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                       {singlePost.author.name.charAt(0).toUpperCase()}
                     </span>
                     <span className="font-semibold">
                       {singlePost.author.name}
                     </span>
-                  </div>
+                  </Link>
                   {singlePost && userId && userId != singlePost.authorId && (
                     <Link href={`/sendMsg/${singlePost.author.username}`}>
                       <div>

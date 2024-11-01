@@ -22,7 +22,7 @@ export default function Navbar() {
         }
         setUserDetails(res.decodeCookieValue);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getUserDetails();

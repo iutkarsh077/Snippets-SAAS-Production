@@ -26,13 +26,13 @@ export default function DescriptionBox({
     };
     try {
       const res = await UploadSnippets(data);
-      console.log(res);
+      // console.log(res);
       if (res.status === false) {
         throw new Error(res.msg);
       }
       router.push("/snippets");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

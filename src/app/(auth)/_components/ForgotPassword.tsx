@@ -40,7 +40,7 @@ const ForgotPassword = () => {
         throw new Error(res.msg);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }
@@ -53,14 +53,14 @@ const ForgotPassword = () => {
         return;
     } 
     try {
-      console.log(data);
+      // console.log(data);
       const res = await VerifyEmailForForgotPassword(data);
       if (res.status === false) {
         throw new Error(res.msg);
       }
       setRenderChangePassword(true);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

@@ -5,7 +5,7 @@ import prisma from "../prisma";
 export async function CheckUsernameUnique(username: string) {
     revalidatePath("/sign-up");
     try {
-        console.log(username)
+        // console.log(username)
         const findUserName = await prisma.user.findFirst({
             where: {
                 username: username

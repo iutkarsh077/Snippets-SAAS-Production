@@ -72,7 +72,7 @@ export default function CustomDialog({
       setCoverImage(saveCoverImage.coverImage!);
       setIsUploaded(true);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsUploading(false);
     }

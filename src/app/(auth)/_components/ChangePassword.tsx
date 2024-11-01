@@ -43,7 +43,7 @@ const ChangePassword = ({userEmail}:{userEmail: string}) => {
       }
       router.push("/sign-up");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     finally{
         setLoading(false);

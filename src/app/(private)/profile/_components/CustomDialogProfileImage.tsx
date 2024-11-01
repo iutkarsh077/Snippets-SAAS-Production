@@ -72,7 +72,7 @@ export default function CustomDialogForProfileImage({
       setProfileImage(saveProfileImage.saveProfileImage!);
       setIsUploaded(true);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsUploading(false);
     }

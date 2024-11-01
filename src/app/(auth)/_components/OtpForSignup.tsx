@@ -50,7 +50,7 @@ const OtpForSignup = ({ username }: { username: string }) => {
       // console.log(res);
       router.push("/login");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

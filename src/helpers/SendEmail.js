@@ -22,9 +22,9 @@ export async function sendMail({ to, name, subject, body }) {
 
   try {
     await transport.verify();
-    console.log("SMTP connection successful");
+    // console.log("SMTP connection successful");
   } catch (error) {
-    console.error("SMTP connection error:", error);
+    // console.error("SMTP connection error:", error);
     return;
   }
 

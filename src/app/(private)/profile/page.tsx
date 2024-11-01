@@ -15,6 +15,7 @@ import { GetAllSnippets } from "../../../../actions/GetAllSnippets";
 import { GetUserDetailsInProfile } from "../../../../actions/GetUserDetailsInProfile";
 import { LogoutUser } from "../../../../actions/LogoutUser";
 import { useRouter } from "next/navigation";
+import { GetPostForProfile } from "../../../../actions/GetParticularUserPost";
 
 export default function Profile() {
   const router = useRouter();
@@ -29,20 +30,21 @@ export default function Profile() {
   const [about, setAbout] = useState("");
   const [location, setLocation] = useState("");
   const [badges, setBadges] = useState<any[]>();
+  const [userName, setUsername] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
 
   useEffect(() => {
-    const getAllSnippets = async () => {
+    const getAllSnippetsForProfile = async () => {
       setLoading(true);
-      const res = await GetAllSnippets();
+      const res = await GetPostForProfile();
       if (res && res.data) {
         setSnippets(res.data as any);
-        console.log(res);
+        // console.log(res);
       }
       setLoading(false);
     };
-    getAllSnippets();
+    getAllSnippetsForProfile();
   }, []);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function Profile() {
         if (res.status === false) {
           throw new Error(res.msg);
         }
-        console.log(res);
+        // console.log(res);
         setProfileImage(res?.decodeCookieValue?.profileImage as string);
         setCoverImage(res?.decodeCookieValue?.backgroundImage as string);
         setName(res?.decodeCookieValue?.name as string);
@@ -61,8 +63,9 @@ export default function Profile() {
         setAbout(res.decodeCookieValue?.about as string);
         setLocation(res.decodeCookieValue?.location as string);
         setBadges(res.decodeCookieValue?.badges as string[]);
+        setUsername(res.decodeCookieValue?.username as string);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -144,6 +147,7 @@ export default function Profile() {
           <div className="flex justify-between items-start mb-4">
             <div>
               <h1 className="text-2xl font-bold">{name || "Profile Name"}</h1>
+              <p className="text-muted-foreground">{userName}</p>
               <p className="text-muted-foreground">{workplace}</p>
               <p className="text-sm text-muted-foreground mt-1">{location}</p>
             </div>
@@ -194,7 +198,6 @@ export default function Profile() {
             (a: any, b: any) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           )
-          .slice(0, 6)
           .map((snippet, index) => (
             <div key={index}>
               <CodeCard snippet={snippet} />

@@ -59,7 +59,7 @@ export default function DialogForOtherSections({
         throw new Error(res.msg);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   return (

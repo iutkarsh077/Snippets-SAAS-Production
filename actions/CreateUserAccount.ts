@@ -6,7 +6,7 @@ import Sendit from "@/helpers/SendIt";
 import bcrypt from "bcryptjs";
 
 export async function CreateUserAccount(data: signUpTypes) {
-    console.log(data);
+    // console.log(data);
 
     try {
         const findUser = await prisma.user.findFirst({
@@ -39,7 +39,7 @@ export async function CreateUserAccount(data: signUpTypes) {
             }
         })
 
-        console.log(createUser);
+        // console.log(createUser);
 
 
         await Sendit({to: data.email, name: data.name, subject: "Email Verification", body: randomNumber})

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import prisma from "../prisma";
+import { string } from "zod";
 
 export async function GetSinglePost(id: string) {
     revalidatePath("/description");
@@ -14,7 +15,8 @@ export async function GetSinglePost(id: string) {
                 author: {
                     select: {
                         name: true,
-                        id: true
+                        id: true,
+                        username: true
                     },
                 },
                 comments: {
@@ -22,7 +24,8 @@ export async function GetSinglePost(id: string) {
                         author: {
                             select: {
                                 name: true,
-                                id: true
+                                id: true,
+                                username: true
                             }
                         }
                     }
@@ -30,7 +33,7 @@ export async function GetSinglePost(id: string) {
             },
         });
 
-        console.log(getPost);
+        // console.log(getPost);
         return { msg: "Succeed to get The post", data: getPost, status: true }
     } catch (error) {
         return { msg: "Internal Server error", status: false }

@@ -19,7 +19,7 @@ export async function VerifyEmailForForgotPassword(data: VerifyuserProps) {
                 email: email
             }
         })
-        console.log(findUserEmail)
+        // console.log(findUserEmail)
 
         if (!findUserEmail) {
             return { msg: "User not found", status: false };

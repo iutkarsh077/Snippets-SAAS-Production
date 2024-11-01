@@ -65,7 +65,7 @@ export default function SignUp() {
 
       reset();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -186,16 +186,6 @@ export default function SignUp() {
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>
             )}
-          </div>
-
-          {/* Forgot Password */}
-          <div className="flex items-center justify-between text-sm">
-            <a
-              href="#"
-              className="text-blue-600 font-semibold hover:text-blue-800"
-            >
-              Forgot password?
-            </a>
           </div>
 
           {/* Submit Button */}

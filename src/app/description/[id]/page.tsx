@@ -10,8 +10,11 @@ import { formatDistanceToNow } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { GetSinglePost } from "../../../../actions/GetSinglePost";
 import { AddComments } from "../../../../actions/AddComments";
+import { GetUserDetails } from "../../../../actions/GetUserDetails";
+import Link from "next/link";
 interface Author {
   name: string;
+  username: string
 }
 
 interface PostSnippet {
@@ -33,6 +36,7 @@ export default function OneSnippet() {
   const [comment, setComment] = useState("");
   const [showComment, setShowComment] = useState<any[] | null>(null);
   const [commentSendLoading, setCommentSendLoading] = useState(false);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const getUniquePost = async () => {
@@ -41,9 +45,16 @@ export default function OneSnippet() {
           throw new Error("No id provided");
         }
         const res = await GetSinglePost(id);
+        // console.log(res);
+        const userId = await GetUserDetails();
+        if(userId.status === false){
+          throw new Error(userId.msg)
+        }
+
+        setUserId(userId.decodeCookieValue?.id);
         setSinglePost(res.data as any);
         setShowComment(res.data!.comments);
-        console.log(res);
+        // console.log(res);
       } catch (error: any) {
         const errorMessage =
           error.response.data.msg || "An unknow error occured";
@@ -73,7 +84,7 @@ export default function OneSnippet() {
         if (res.status === false) {
           throw new Error(res.msg);
         }
-        console.log(res.data?.comments);
+        // console.log(res.data?.comments);
         setShowComment(res.data!.comments);
         setCreateComment(false);
     } catch (error: any) {
@@ -103,9 +114,9 @@ export default function OneSnippet() {
                     {singlePost.author.name}
                   </span>
                 </div>
-                {/* {GlobalUserDetails &&
-                  GlobalUserDetails.id != singlePost.authorId && (
-                    <Link href={`/userChat/${singlePost.authorId}`}>
+                {singlePost && userId &&
+                  userId != singlePost.authorId && (
+                    <Link href={`/sendMsg/${singlePost.author.username}`}>
                       <div>
                         <button
                           type="submit"
@@ -115,7 +126,7 @@ export default function OneSnippet() {
                         </button>
                       </div>
                     </Link>
-                  )} */}
+                  )}
               </div>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex space-x-2">

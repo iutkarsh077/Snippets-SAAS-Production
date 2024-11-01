@@ -24,7 +24,7 @@ const MainSnippets = () => {
       const res = await GetAllSnippets();
       if (res && res.data) {
         setSnippets(res.data as any);
-        console.log(res);
+        // console.log(res);
       }
       setLoading(false);
     };

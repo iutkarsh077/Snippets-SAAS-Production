@@ -16,7 +16,7 @@ export async function SaveUserOtherData(data: DataTypes) {
     try {
         revalidatePath("/profile");
         const { workplace, about, location, badges } = data;
-        console.log(data);
+        // console.log(data);
         const cookieStore = cookies();
         const getCookie = cookieStore.get("snippets")?.value as string;
         const decodeCookieValue = jwt.verify(getCookie, process.env.JWT_SECRET!) as JwtPayload;
@@ -36,7 +36,7 @@ export async function SaveUserOtherData(data: DataTypes) {
             data: userOtherInfo
         });
 
-        console.log(saveUserOtherData);
+        // console.log(saveUserOtherData);
         let token = jwt.sign(
             {
                 id: saveUserOtherData.id,

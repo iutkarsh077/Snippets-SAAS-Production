@@ -23,7 +23,7 @@ export default function Footer() {
 
           
           <motion.div
-            className="flex space-x-4 text-gray-400"
+            className="flex space-x-4 text-gray-400 break-words text-wrap flex-wrap gap-y-3"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -39,6 +39,10 @@ export default function Footer() {
             </Link>
             <Link href="/askAi" className="hover:text-white">
               Artify
+            </Link>
+
+            <Link href="/reviewUs" className="hover:text-white">
+              Review Us
             </Link>
           </motion.div>
 

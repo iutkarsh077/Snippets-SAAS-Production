@@ -156,7 +156,7 @@ export default function OneSnippet() {
                     <span className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                       {singlePost.author.name.charAt(0).toUpperCase()}
                     </span>
-                    <span className="font-semibold">
+                    <span className="font-semibold text-white">
                       {singlePost.author.name}
                     </span>
                   </Link>

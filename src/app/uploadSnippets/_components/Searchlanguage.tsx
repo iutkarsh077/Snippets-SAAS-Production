@@ -74,7 +74,7 @@ export default function SearchLanguage({
                 <motion.li
                   key={index}
                   //   whileHover={{ backgroundColor: "#f3f4f6" }}
-                  className="px-4 py-2 cursor-pointer text-white"
+                  className="px-4 py-2 cursor-pointer  dark:text-white text-black"
                   onClick={() => {
                     setSearchTerm(language);
                     setIsOpen(false);

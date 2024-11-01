@@ -179,7 +179,7 @@ export default function Profile() {
         >
           <h2 className="text-xl font-semibold mb-4">About Me</h2>
           <div className="space-y-4">
-            {clickedReadMore ? <p>{about}</p> : <p>{about.slice(0, 400)}...</p>}
+            {clickedReadMore ? <p className="break-words">{about}</p> : <p className="break-words">{about.slice(0, 400)}...</p>}
           </div>
           {about.length >= 300 && (
             <Button

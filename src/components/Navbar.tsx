@@ -93,23 +93,28 @@ export default function Navbar() {
                 <IoCloudUpload className="text-2xl font-semibold" />
               </Link>
             )}
-            <SwitchToggle />
-            {userDetails ? (
-              <Link href={`/profile`} className="font-semibold">
-                <div>{userDetails.name}</div>
-              </Link>
-            ) : (
-              <Link
-                href={"/login"}
-                className="bg-black pt-2 pb-2 pl-4 pr-4 hover:bg-gray-800 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-400 hover:ease-in-out hover:transition-all hover:duration-300 font-semibold text-white rounded-md"
-              >
-                Login
-              </Link>
-            )}
+            <p className="hidden md:block">
+              <SwitchToggle />
+            </p>
+            <div className="hidden md:block">
+              {userDetails ? (
+                <Link href={`/profile`} className="font-semibold">
+                  <div>{userDetails.name}</div>
+                </Link>
+              ) : (
+                <Link
+                  href={"/login"}
+                  className="bg-black pt-2 pb-2 pl-4 pr-4 hover:bg-gray-800 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-400 hover:ease-in-out hover:transition-all hover:duration-300 font-semibold text-white rounded-md"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center">
+          <div className="flex md:hidden items-center gap-x-4">
+            <SwitchToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="focus:outline-none"
@@ -155,6 +160,20 @@ export default function Navbar() {
                 </Link>
               </p>
             ))}
+            <div className="block pt-2 md:hidden">
+              {userDetails ? (
+                <Link href={`/profile`} className="font-semibold">
+                  <div>{userDetails.name}</div>
+                </Link>
+              ) : (
+                <Link
+                  href={"/login"}
+                  className="bg-black pt-2 pb-2 pl-4 pr-4 hover:bg-gray-800 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-400 hover:ease-in-out hover:transition-all hover:duration-300 font-semibold text-white rounded-md"
+                >
+                  Login
+                </Link>
+              )}
+            </div>
           </div>
         </motion.div>
       )}

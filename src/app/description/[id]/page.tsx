@@ -12,9 +12,12 @@ import { GetSinglePost } from "../../../../actions/GetSinglePost";
 import { AddComments } from "../../../../actions/AddComments";
 import { GetUserDetails } from "../../../../actions/GetUserDetails";
 import Link from "next/link";
+import { SnippetType } from "@/app/snippets/page";
+import { GetAllSnippets } from "../../../../actions/GetAllSnippets";
+import CodeCard from "@/app/(home)/_components/Card";
 interface Author {
   name: string;
-  username: string
+  username: string;
 }
 
 interface PostSnippet {
@@ -29,7 +32,7 @@ interface PostSnippet {
 }
 
 export default function OneSnippet() {
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const [copied, setCopied] = useState(false);
   const [singlePost, setSinglePost] = useState<PostSnippet | null>(null);
   const [createComment, setCreateComment] = useState(false);
@@ -37,6 +40,33 @@ export default function OneSnippet() {
   const [showComment, setShowComment] = useState<any[] | null>(null);
   const [commentSendLoading, setCommentSendLoading] = useState(false);
   const [userId, setUserId] = useState("");
+  const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
+
+  useEffect(() => {
+    const getAllSnippets = async () => {
+      const res = await GetAllSnippets();
+      if (res && res.data) {
+        // Generate an array of random unique indexes
+        const randomIndexes: any = [];
+        while (
+          randomIndexes.length < 3 &&
+          randomIndexes.length < res.data.length
+        ) {
+          const randomIndex = Math.floor(Math.random() * res.data.length);
+          if (!randomIndexes.includes(randomIndex)) {
+            randomIndexes.push(randomIndex);
+          }
+        }
+
+        // Use the random indexes to select items from res.data
+        const randomSnippets = randomIndexes.map(
+          (index: number) => res.data[index]
+        );
+        setSnippets(randomSnippets);
+      }
+    };
+    getAllSnippets();
+  }, []);
 
   useEffect(() => {
     const getUniquePost = async () => {
@@ -47,8 +77,8 @@ export default function OneSnippet() {
         const res = await GetSinglePost(id);
         // console.log(res);
         const userId = await GetUserDetails();
-        if(userId.status === false){
-          throw new Error(userId.msg)
+        if (userId.status === false) {
+          throw new Error(userId.msg);
         }
 
         setUserId(userId.decodeCookieValue?.id);
@@ -80,13 +110,13 @@ export default function OneSnippet() {
     };
 
     try {
-        const res = await AddComments(data);
-        if (res.status === false) {
-          throw new Error(res.msg);
-        }
-        // console.log(res.data?.comments);
-        setShowComment(res.data!.comments);
-        setCreateComment(false);
+      const res = await AddComments(data);
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      // console.log(res.data?.comments);
+      setShowComment(res.data!.comments);
+      setCreateComment(false);
     } catch (error: any) {
       const errorMessage = error.response.data || "An unknown error occured";
     } finally {
@@ -95,9 +125,10 @@ export default function OneSnippet() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex">
+      <div className="xl:w-2/3 w-full pl-2 xl:pl-0 pr-2 xl:pr-0">
       {singlePost && (
-        <div className="flex flex-col-reverse lg:ml-20 mt-14 w-3/5 justify-center gap-x-10">
+        <div className="flex flex-col-reverse lg:ml-20 mt-14 w-full justify-center gap-x-10">
           <motion.div
             className="max-w-3xl w-full flex flex-col bg-gray-900 rounded-xl shadow-xl overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
@@ -114,19 +145,18 @@ export default function OneSnippet() {
                     {singlePost.author.name}
                   </span>
                 </div>
-                {singlePost && userId &&
-                  userId != singlePost.authorId && (
-                    <Link href={`/sendMsg/${singlePost.author.username}`}>
-                      <div>
-                        <button
-                          type="submit"
-                          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                          Chat
-                        </button>
-                      </div>
-                    </Link>
-                  )}
+                {singlePost && userId && userId != singlePost.authorId && (
+                  <Link href={`/sendMsg/${singlePost.author.username}`}>
+                    <div>
+                      <button
+                        type="submit"
+                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        Chat
+                      </button>
+                    </div>
+                  </Link>
+                )}
               </div>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex space-x-2">
@@ -232,7 +262,7 @@ export default function OneSnippet() {
 
       {createComment === false && showComment && (
         <>
-          <div className="max-w-3xl pl-28 pt-4 pb-4  mt-10 rounded-lg shadow">
+          <div className="xl:max-w-3xl w-full overflow-y-auto overflow-x-hidden example h-screen xl:pl-28 pt-4 pb-4  mt-10 rounded-lg shadow">
             <h2 className="text-2xl font-bold mb-4">
               Comments ({showComment.length})
             </h2>
@@ -269,7 +299,7 @@ export default function OneSnippet() {
                         {comment.author.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <h3 className="font-semibold">{comment.author.name}</h3>
+                        <h3 className="font-semibold text-white">{comment.author.name}</h3>
                         <p className="text-sm text-gray-500">
                           {formatDistanceToNow(new Date(comment.createdAt), {
                             addSuffix: true,
@@ -277,7 +307,7 @@ export default function OneSnippet() {
                         </p>
                       </div>
                     </div>
-                    <p className="text-white">
+                    <p className="text-white pl-10">
                       {comment.content
                         .split("\n")
                         .map((code: string, index: number) => (
@@ -292,6 +322,20 @@ export default function OneSnippet() {
           </div>
         </>
       )}
+      </div>
+      <div className=" space-y-14 w-1/3 mt-10 xl:block hidden">
+        {snippets
+          ?.sort(
+            (a: any, b: any) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .slice(0, 6)
+          .map((snippet, index) => (
+            <div key={index}>
+              <CodeCard snippet={snippet} />
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

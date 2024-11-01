@@ -9,8 +9,8 @@ import { GetAllSnippets } from "../../../../actions/GetAllSnippets";
 import { SnippetType } from "@/app/snippets/page";
 
 const HomeSection = () => {
-  const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   
   useEffect(() => {
     const getAllSnippets = async () => {

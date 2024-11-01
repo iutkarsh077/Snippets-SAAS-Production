@@ -26,7 +26,7 @@ export default function Navbar() {
       }
     };
     getUserDetails();
-  }, []);
+  }, [path]);
 
   const navLinks = [
     { name: "Dashboard", href: "/" },
@@ -149,7 +149,7 @@ export default function Navbar() {
               <p key={index}>
                 <Link
                   href={link.href}
-                  className="text-white text-lg font-medium"
+                  className="dark:text-white text-black text-lg font-medium"
                 >
                   {link.name}
                 </Link>

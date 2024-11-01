@@ -172,26 +172,28 @@ export default function Profile() {
       </motion.div>
 
       {/* About Section */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="bg-card rounded-lg p-6 mt-4 mx-6"
-      >
-        <h2 className="text-xl font-semibold mb-4">About Me</h2>
-        <div className="space-y-4">
-          {clickedReadMore ? <p>{about}</p> : <p>{about.slice(0, 400)}...</p>}
-        </div>
-        {about.length >= 300 && (
-          <Button
-            onClick={() => setClickedReadMore(!clickedReadMore)}
-            variant="ghost"
-            className="mt-4"
-          >
-            {clickedReadMore ? "Read Less..." : "Read More..."}
-          </Button>
-        )}
-      </motion.div>
+      {about.length > 0 && (
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="bg-card rounded-lg p-6 mt-4 mx-6"
+        >
+          <h2 className="text-xl font-semibold mb-4">About Me</h2>
+          <div className="space-y-4">
+            {clickedReadMore ? <p>{about}</p> : <p>{about.slice(0, 400)}...</p>}
+          </div>
+          {about.length >= 300 && (
+            <Button
+              onClick={() => setClickedReadMore(!clickedReadMore)}
+              variant="ghost"
+              className="mt-4"
+            >
+              {clickedReadMore ? "Read Less..." : "Read More..."}
+            </Button>
+          )}
+        </motion.div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-x-6 gap-y-14 mx-3 mt-10  ">
         {snippets
           ?.sort(

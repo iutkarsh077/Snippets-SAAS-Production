@@ -28,7 +28,7 @@ const HomeSection = () => {
   return (
     <>
       <Header/>
-      <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-x-6 gap-y-14 mx-3 mt-10 ml-20 mr-20">
+      <div className="grid grid-cols-1  sm:grid-cols-2  lg:grid-cols-3 gap-x-6 gap-y-14  mt-10 xl:ml-20 xl:mr-20 ml-3 mr-3">
         {snippets
           ?.sort(
             (a: any, b: any) =>

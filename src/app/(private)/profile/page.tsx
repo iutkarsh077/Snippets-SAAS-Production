@@ -106,7 +106,7 @@ export default function Profile() {
           <Image
             src={
               coverImage ||
-              "https://plus.unsplash.com/premium_photo-1673177667569-e3321a8d8256?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y292ZXIlMjBwaG90b3xlbnwwfHwwfHx8MA%3D%3D"
+              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
             }
             alt="Profile banner"
             width={768}
@@ -127,12 +127,12 @@ export default function Profile() {
           <Image
             src={
               profileImage ||
-              "https://t4.ftcdn.net/jpg/02/24/86/95/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
+              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
             }
             alt="Profile picture"
             width={150}
             height={400}
-            className="rounded-full h-36"
+            className="rounded-full h-36 border-2 bg-black border-white"
           />
         </div>
 
@@ -177,7 +177,7 @@ export default function Profile() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="bg-card rounded-lg p-6 mt-4 mx-6"
+          className="bg-card rounded-lg p-6 mt-4 xl:mx-6"
         >
           <h2 className="text-xl font-semibold mb-4">About Me</h2>
           <div className="space-y-4">

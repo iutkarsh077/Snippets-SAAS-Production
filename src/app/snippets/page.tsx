@@ -40,7 +40,7 @@ const MainSnippets = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mx-3 mt-10 mb-10 ml-20 mr-20">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10  mt-10 xl:ml-20 xl:mr-20 ml-3 mr-3">
       {snippets &&
         snippets
           .sort((a: { createdAt: any }, b: { createdAt: any }) => {
@@ -48,7 +48,11 @@ const MainSnippets = () => {
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             );
           })
-          .map((snippet: any, index: number) => <p key={index}><CodeCard snippet={snippet} /></p>)}
+          .map((snippet: any, index: number) => (
+            <p key={index}>
+              <CodeCard snippet={snippet} />
+            </p>
+          ))}
     </div>
   );
 };

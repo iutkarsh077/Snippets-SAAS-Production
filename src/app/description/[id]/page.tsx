@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Clipboard, Check, Send } from "lucide-react";
+import { Clipboard, Check, Send, OctagonX } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { FaRegComment } from "react-icons/fa";
@@ -15,6 +15,16 @@ import Link from "next/link";
 import { SnippetType } from "@/app/snippets/page";
 import { GetAllSnippets } from "../../../../actions/GetAllSnippets";
 import CodeCard from "@/app/(home)/_components/Card";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DeleteSnippet } from "../../../../actions/DeleteSnippet";
 interface Author {
   name: string;
   username: string;
@@ -43,6 +53,9 @@ export default function OneSnippet() {
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDialogOpen, setIsOpen] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const getAllSnippets = async () => {
@@ -98,6 +111,33 @@ export default function OneSnippet() {
     };
     getUniquePost();
   }, []);
+
+  const { toast } = useToast();
+
+  const handleDeleteSnippet = async (id: string) => {
+    setLoadingDelete(true);
+    try {
+      const res = await DeleteSnippet(id);
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+
+      setIsOpen(false);
+      setLoadingDelete(false);
+      toast({
+        title: res.msg,
+        description: formatDistanceToNow(new Date()),
+      });
+      router.push("/snippets");
+    } catch (error: any) {
+    //   console.log(error);
+      toast({
+        title: "Something went wrong, Please try again after somethime",
+        description: formatDistanceToNow(new Date()),
+      });
+      setIsOpen(false);
+    }
+  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(singlePost?.code as string);
@@ -172,6 +212,7 @@ export default function OneSnippet() {
                       </div>
                     </Link>
                   )}
+                  
                 </div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex space-x-2">
@@ -179,14 +220,22 @@ export default function OneSnippet() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                   </div>
+                  
+                 <div className="flex gap-x-8 hover:cursor-pointer">
+                 {
+                    singlePost && userId && userId == singlePost.authorId && (
+                      <OctagonX className="text-gray-400 hover:text-white transition-colors" onClick={()=>setIsOpen(true)}/>
+                    )
+                  }
                   <motion.button
                     className="text-gray-400 hover:text-white transition-colors"
                     onClick={copyToClipboard}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                  >
+                    >
                     {copied ? <Check size={20} /> : <Clipboard size={20} />}
                   </motion.button>
+                 </div>
                 </div>
                 <SyntaxHighlighter
                   language={singlePost.programmingLanguage}
@@ -353,6 +402,35 @@ export default function OneSnippet() {
             </div>
           ))}
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-md rounded-lg p-6 shadow-lg transition-all duration-300">
+          <DialogHeader className="text-center">
+            <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-white">
+              Are you absolutely sure?
+            </DialogTitle>
+            <DialogDescription className="mt-4 text-sm text-gray-600 dark:text-white">
+              This action cannot be undone. This will permanently delete your
+              data.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-6 flex justify-end space-x-4">
+            <Button
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-2 rounded-lg bg-gray-100 dark:text-black hover:bg-gray-200 transition-all duration-200"
+            >
+              Back
+            </Button>
+            <Button
+              onClick={() => handleDeleteSnippet(id)}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white dark:text-black hover:bg-red-700 transition-all duration-200"
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

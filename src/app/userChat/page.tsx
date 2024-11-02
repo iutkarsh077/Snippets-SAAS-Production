@@ -22,6 +22,7 @@ const UserChat = () => {
   const [userChat, setUserChat] = useState<ChatTypes[] | null>(null);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loading, setLoading] = useState(false);
+  
   const { toast } = useToast();
 
   useEffect(() => {

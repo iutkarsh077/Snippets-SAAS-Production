@@ -25,6 +25,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DeleteSnippet } from "../../../../actions/DeleteSnippet";
+import { DeleteComment } from "../../../../actions/DeleteComment";
 interface Author {
   name: string;
   username: string;
@@ -55,6 +56,9 @@ export default function OneSnippet() {
   const [loading, setLoading] = useState(false);
   const [isDialogOpen, setIsOpen] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [deleteCommentId, setDeleteCommentId] = useState("");
+  const [isDialogOpenForDeleteComment, setIsisDialogOpenForDeleteComment] =
+    useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -130,12 +134,43 @@ export default function OneSnippet() {
       });
       router.push("/snippets");
     } catch (error: any) {
-    //   console.log(error);
+      //   console.log(error);
       toast({
         title: "Something went wrong, Please try again after somethime",
         description: formatDistanceToNow(new Date()),
       });
       setIsOpen(false);
+    }
+  };
+
+  const handleDeleteComment = async () => {
+    if (deleteCommentId === "") return;
+
+    try {
+      setLoadingDelete(true);
+      const res = await DeleteComment({
+        commentId: deleteCommentId,
+        postId: id,
+      });
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      setSinglePost(res.data as any);
+      setUsername(res.data?.author.username as string);
+      setShowComment(res.data!.comments);
+      toast({
+        title: res.msg,
+        description: formatDistanceToNow(new Date()),
+      });
+    } catch (error) {
+      toast({
+        title: "Something went wrong, Please try again after somethime",
+        description: formatDistanceToNow(new Date()),
+      });
+    } finally {
+      setLoadingDelete(false);
+      setIsisDialogOpenForDeleteComment(false);
+      setDeleteCommentId("");
     }
   };
 
@@ -192,7 +227,10 @@ export default function OneSnippet() {
             >
               <div className="p-6 w-full">
                 <div className="h-10 w-full mb-6 flex justify-around">
-                  <Link href={`/profile/${username}`} className="h-10 w-full flex items-center">
+                  <Link
+                    href={`/profile/${username}`}
+                    className="h-10 w-full flex items-center"
+                  >
                     <span className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                       {singlePost.author.name.charAt(0).toUpperCase()}
                     </span>
@@ -212,7 +250,6 @@ export default function OneSnippet() {
                       </div>
                     </Link>
                   )}
-                  
                 </div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex space-x-2">
@@ -220,22 +257,23 @@ export default function OneSnippet() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                   </div>
-                  
-                 <div className="flex gap-x-8 hover:cursor-pointer">
-                 {
-                    singlePost && userId && userId == singlePost.authorId && (
-                      <OctagonX className="text-gray-400 hover:text-white transition-colors" onClick={()=>setIsOpen(true)}/>
-                    )
-                  }
-                  <motion.button
-                    className="text-gray-400 hover:text-white transition-colors"
-                    onClick={copyToClipboard}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+
+                  <div className="flex gap-x-8 hover:cursor-pointer">
+                    {singlePost && userId && userId == singlePost.authorId && (
+                      <OctagonX
+                        className="text-gray-400 hover:text-white transition-colors"
+                        onClick={() => setIsOpen(true)}
+                      />
+                    )}
+                    <motion.button
+                      className="text-gray-400 hover:text-white transition-colors"
+                      onClick={copyToClipboard}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                     >
-                    {copied ? <Check size={20} /> : <Clipboard size={20} />}
-                  </motion.button>
-                 </div>
+                      {copied ? <Check size={20} /> : <Clipboard size={20} />}
+                    </motion.button>
+                  </div>
                 </div>
                 <SyntaxHighlighter
                   language={singlePost.programmingLanguage}
@@ -358,19 +396,37 @@ export default function OneSnippet() {
                       }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="flex items-center mb-2">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                          {comment.author.name.charAt(0).toUpperCase()}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center mb-2">
+                          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                            {comment.author.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-white">
+                              {comment.author.name}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {formatDistanceToNow(
+                                new Date(comment.createdAt),
+                                {
+                                  addSuffix: true,
+                                }
+                              )}
+                            </p>
+                          </div>
                         </div>
                         <div>
-                          <h3 className="font-semibold text-white">
-                            {comment.author.name}
-                          </h3>
-                          <p className="text-sm text-gray-500">
-                            {formatDistanceToNow(new Date(comment.createdAt), {
-                              addSuffix: true,
-                            })}
-                          </p>
+                          {comment.authorId == userId ? (
+                            <OctagonX
+                              className="text-gray-400 hover:text-white transition-colors"
+                              onClick={() => {
+                                setIsisDialogOpenForDeleteComment(true);
+                                setDeleteCommentId(comment.id);
+                              }}
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                       <p className="text-white pl-10">
@@ -428,6 +484,43 @@ export default function OneSnippet() {
             >
               Delete
             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isDialogOpenForDeleteComment}
+        onOpenChange={setIsisDialogOpenForDeleteComment}
+      >
+        <DialogContent className="max-w-md rounded-lg p-6 shadow-lg transition-all duration-300">
+          <DialogHeader className="text-center">
+            <DialogTitle className="text-xl font-semibold text-gray-800 dark:text-white">
+              Are you absolutely sure?
+            </DialogTitle>
+            <DialogDescription className="mt-4 text-sm text-gray-600 dark:text-white">
+              This action cannot be undone. This will permanently delete your
+              comment.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-6 flex justify-end space-x-4">
+            <Button
+              variant="outline"
+              onClick={() => setIsisDialogOpenForDeleteComment(false)}
+              className="px-4 py-2 rounded-lg bg-gray-100 dark:text-black hover:bg-gray-200 transition-all duration-200"
+            >
+              Back
+            </Button>
+            {loadingDelete ? (
+              <Loader2 className="animate-spin w-7 h-7 flex items-center" />
+            ) : (
+              <Button
+                onClick={handleDeleteComment}
+                className="px-4 py-2 rounded-lg bg-red-600 text-white dark:text-black hover:bg-red-700 transition-all duration-200"
+              >
+                Delete
+              </Button>
+            )}
           </div>
         </DialogContent>
       </Dialog>

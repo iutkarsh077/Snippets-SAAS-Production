@@ -33,6 +33,7 @@ export default function Navbar() {
     { name: "Snippets", href: "/snippets" },
     { name: "DevChat", href: "/userChat" },
     { name: "ArtifyAI", href: "/askAi" },
+    { name: "Explore", href: "/explore" },
   ];
 
   const containerVariants = {

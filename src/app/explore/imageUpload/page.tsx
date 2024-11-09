@@ -81,7 +81,7 @@ const UploadImageAndShareLink = () => {
       {!uploadedImageUrl ? (
         <>
           <FileUpload onChange={handleFileChange} />
-          <Button onClick={handleUploadFile}>Upload</Button>
+          <Button onClick={handleUploadFile} className="ml-8">Upload</Button>
         </>
       ) : (
         <div className=" w-full h-full flex flex-col gap-y-4 pt-20 justify-center items-center">

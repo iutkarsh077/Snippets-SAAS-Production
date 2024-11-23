@@ -31,7 +31,7 @@ export default function Profile() {
   const [userName, setUsername] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const baseUrl = "https://snippets-saas-production.vercel.app/";
   useEffect(() => {
     const getAllSnippetsForProfile = async () => {
       setLoading(true);

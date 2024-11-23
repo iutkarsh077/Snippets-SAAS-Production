@@ -12,11 +12,11 @@ import CodeCard from "@/app/(home)/_components/Card";
 import { SnippetType } from "@/app/snippets/page";
 import { GetUserDetailsInProfile } from "../../../../actions/GetUserDetailsInProfile";
 import { LogoutUser } from "../../../../actions/LogoutUser";
-import { useParams, useRouter } from "next/navigation";
 import { GetPostForProfile } from "../../../../actions/GetParticularUserPost";
-import { GetUserDetails } from "../../../../actions/GetUserDetails";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Profile() {
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenforCover, setIsOpenForCover] = useState(false);
   const [profileImage, setProfileImage] = useState("");
@@ -31,7 +31,7 @@ export default function Profile() {
   const [userName, setUsername] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
-
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
   useEffect(() => {
     const getAllSnippetsForProfile = async () => {
       setLoading(true);
@@ -74,6 +74,16 @@ export default function Profile() {
   const handleLogout = async () => {
     await LogoutUser();
     window.location.reload();
+  };
+
+  const handleCopyProfile = () => {
+    const profile = `${baseUrl}/profile/${userName}`;
+    navigator.clipboard.writeText(profile);
+    // console.log(profile)
+    toast({
+      title: "URL Copied!",
+      description: "Profile URL has been copied to clipboard.",
+    });
   };
 
   if (loading) {
@@ -149,12 +159,15 @@ export default function Profile() {
               <p className="text-muted-foreground">{workplace}</p>
               <p className="text-sm text-muted-foreground mt-1">{location}</p>
             </div>
-           <div className="flex items-center gap-2 hover:cursor-pointer p-2 text-white rounded-md">
+            <div className="flex flex-col-reverse sm:flex-row items-center gap-5 hover:cursor-pointer p-2 text-white rounded-md">
+              <div className="flex flex-col sm:flex-row gap-y-3 sm:gap-x-5">
+                {name && <Button onClick={handleLogout}>Logout</Button>}
+                {name && <Button onClick={handleCopyProfile}>Share</Button>}
+              </div>
               <DialogForOtherSections
                 dialogOpen={dialogOpen}
                 setDialogOpen={setDialogOpen}
               />
-              {name && <Button onClick={handleLogout}>Logout</Button>}
             </div>
           </div>
 
@@ -179,7 +192,11 @@ export default function Profile() {
         >
           <h2 className="text-xl font-semibold mb-4">About Me</h2>
           <div className="space-y-4">
-            {clickedReadMore ? <p className="break-words">{about}</p> : <p className="break-words">{about.slice(0, 400)}...</p>}
+            {clickedReadMore ? (
+              <p className="break-words">{about}</p>
+            ) : (
+              <p className="break-words">{about.slice(0, 400)}...</p>
+            )}
           </div>
           {about.length >= 300 && (
             <Button

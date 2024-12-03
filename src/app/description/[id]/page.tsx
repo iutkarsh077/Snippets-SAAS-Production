@@ -330,7 +330,7 @@ export default function OneSnippet() {
         )}
 
         {createComment && (
-          <div className="ml-20 overflow-hidden">
+          <div className="lg:ml-20 overflow-hidden">
             <motion.div
               className="flex space-y-3 p-4 gap-x-4 rounded-md shadow-lg w-full max-w-3xl"
               initial={{ opacity: 0, y: 20 }}
@@ -339,11 +339,11 @@ export default function OneSnippet() {
             >
               <textarea
                 placeholder="Add your comment..."
-                className="p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                className="p-2 border border-gray-300 rounded-md w-[80%] focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                 onChange={(e) => setComment(e.target.value)}
               />
               <motion.button
-                className="px-4 flex items-center  gap-x-2 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-4 flex items-center  w-[20%] max-w-fit gap-x-2 py-1 lg:py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddComment}
@@ -353,9 +353,9 @@ export default function OneSnippet() {
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   </span>
                 ) : (
-                  <>
-                    Send <Send />
-                  </>
+                  <span className="text-sm flex gap-x-2 w-full">
+                    Send <Send className="hidden sm:block" />
+                  </span>
                 )}
               </motion.button>
             </motion.div>

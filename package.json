@@ -41,6 +41,7 @@
     "next": "14.2.15",
     "next-themes": "^0.3.0",
     "nodemailer": "^6.9.15",
+    "pusher": "^5.2.0",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.3.5",

@@ -156,6 +156,7 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className="dark:text-white text-black text-lg font-medium"
+                  onClick={() => setIsOpen(false)}
                 >
                   {link.name}
                 </Link>

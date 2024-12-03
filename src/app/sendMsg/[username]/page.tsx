@@ -13,6 +13,7 @@ const SendMsgToAnotherUser = () => {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     if (question.length === 0) return;
@@ -35,6 +36,7 @@ const SendMsgToAnotherUser = () => {
         }),
       });
       setQuestion("");
+      router.push("/userChat")
     } catch (error) {
       // console.log(error);
     } finally {

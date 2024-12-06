@@ -40,7 +40,7 @@ const MainSnippets = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10  mt-10 xl:ml-20 xl:mr-20 ml-3 mr-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10  mt-10 xl:ml-20 xl:mr-20 ml-3 mr-3 pb-10">
       {snippets &&
         snippets
           .sort((a: { createdAt: any }, b: { createdAt: any }) => {

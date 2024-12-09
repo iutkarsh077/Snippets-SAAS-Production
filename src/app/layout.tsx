@@ -17,11 +17,12 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Snippets",
-  description: "A code snippets app that fosters a community of developers.",
+  title: "Snippets - Empowering Developers with Sharable Code Solutions",
+  description:
+    "Discover, share, and collaborate on code snippets in a thriving community of developers. Snippets offers a platform to save your best ideas, learn from others, and contribute to the ever-growing knowledge base of programming expertise.",
   openGraph: {
-    images: "https://i.postimg.cc/c1hMgQ7P/snippet-1.png"
-  }
+    images: "https://i.postimg.cc/c1hMgQ7P/snippet-1.png",
+  },
 };
 
 export default function RootLayout({
@@ -37,7 +38,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
-          <Toaster/>
+          <Toaster />
         </body>
       </NextThemeProvider>
     </html>

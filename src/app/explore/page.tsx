@@ -6,6 +6,7 @@ const data = [
     title: "Generate Image Link",
     description: "Upload an image, get the link, and use it anywhere.",
     path: "/explore/imageUpload",
+    
     mainImage:
       "https://cdni.iconscout.com/illustration/premium/thumb/upload-image-illustration-download-in-svg-png-gif-file-formats--photo-digital-backup-storage-pack-network-communication-illustrations-3618850.png?f=webp",
   },

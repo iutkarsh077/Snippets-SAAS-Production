@@ -12,11 +12,10 @@ import { Comment } from "./Comment";
 import { SaveCommentForFeed } from "../../../../actions/saveCommentsforFeed";
 import { useToast } from "@/hooks/use-toast";
 import { GetFeedComment } from "../../../../actions/GetFeedComment";
-import { AArrowDown, Delete, Loader2 } from "lucide-react";
+import {  Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GetUserDetails } from "../../../../actions/GetUserDetails";
 import { DeleteFeedComment } from "../../../../actions/DeleteFeedComment";
-import { text } from "body-parser";
 
 interface CommentDialogProps {
   isOpen: boolean;

@@ -10,9 +10,16 @@ import { SnippetType } from "@/app/snippets/page";
 import { useParams } from "next/navigation";
 import { GetDetailsForPublicProfile } from "../../../../../actions/GetUsrDetailsForPublicProfile";
 import { GetPostForPublicProfile } from "../../../../../actions/GetPostForPublicProfile";
+import { GetFeedByProfile } from "../../../../../actions/GetfeedByProfile";
+import ImageCard, {
+  ImageCardProps,
+} from "@/app/feeds/_components/HeaderImageCard";
+import { DeleteFeed } from "../../../../../actions/DeleteFeed";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PublicProfile() {
   const { username } = useParams();
+  const [cardData, setCardData] = useState<any | null>(null);
   const [profileImage, setProfileImage] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [name, setName] = useState("");
@@ -25,43 +32,81 @@ export default function PublicProfile() {
   const [userName, setUsername] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
+  const [showSnippets, setShowSnippets] = useState(true);
+  const { toast } = useToast();
 
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      setLoading(true);
-      try {
-        const res = await GetDetailsForPublicProfile(username as string);
-        const res2 = await GetPostForPublicProfile(username as string);
-        if (res2 && res2.data) {
-          setSnippets(res2.data as any);
-          // console.log(res2);
-        }
-        if (res.status === false) {
-          throw new Error(res.msg);
-        }
-        // console.log(res);
-        setProfileImage(res?.decodeCookieValue?.profileImage as string);
-        setCoverImage(res?.decodeCookieValue?.backgroundImage as string);
-        setName(res?.decodeCookieValue?.name as string);
-        setWorkplace(res.decodeCookieValue?.workplace as string);
-        setAbout(res.decodeCookieValue?.about as string);
-        setLocation(res.decodeCookieValue?.location as string);
-        setBadges(res.decodeCookieValue?.badges as string[]);
-        setUsername(res.decodeCookieValue?.username as string);
-      } catch (error) {
-        // console.log(error);
-      } finally {
-        setLoading(false);
+  const fetchUserDetails = async () => {
+    setLoading(true);
+    try {
+      const res = await GetDetailsForPublicProfile(username as string);
+      const res2 = await GetPostForPublicProfile(username as string);
+      if (res2 && res2.data) {
+        setSnippets(res2.data as any);
+        // console.log(res2);
       }
-    };
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      // console.log(res);
+      setProfileImage(res?.decodeCookieValue?.profileImage as string);
+      setCoverImage(res?.decodeCookieValue?.backgroundImage as string);
+      setName(res?.decodeCookieValue?.name as string);
+      setWorkplace(res.decodeCookieValue?.workplace as string);
+      setAbout(res.decodeCookieValue?.about as string);
+      setLocation(res.decodeCookieValue?.location as string);
+      setBadges(res.decodeCookieValue?.badges as string[]);
+      setUsername(res.decodeCookieValue?.username as string);
+    } catch (error) {
+      // console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const fetchFeedData = async () => {
+    try {
+      const res = await GetFeedByProfile();
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      // console.log(res);
+      setCardData(res?.feedsData);
+    } catch (error) {
+      // console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchUserDetails();
+    fetchFeedData();
   }, [dialogOpen]);
+
+  const handleDeleteFeed = async (feedId: string) => {
+    try {
+      setCardData((prevData: any) =>
+        prevData ? prevData.filter((feed: any) => feed.id !== feedId) : prevData
+      );
+      const res = await DeleteFeed(feedId);
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      toast({
+        title: "Feed deleted successfully.",
+        duration: 2000,
+      });
+    } catch (error) {
+      // console.log(error);
+      toast({
+        title: "failed to delete feeds.",
+        duration: 2000,
+      });
+    }
+  };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen overflow-hidden">
-        <Loader2 className="animate-spin" />
+      <div className="flex justify-center items-center pt-60">
+        <Loader2 className="animate-spin h-16 lg:h-28 w-auto" />
       </div>
     );
   }
@@ -70,7 +115,7 @@ export default function PublicProfile() {
     <div className="max-w-7xl mx-auto bg-background mb-20">
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}  
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         className="relative"
       >
@@ -140,7 +185,11 @@ export default function PublicProfile() {
         >
           <h2 className="text-xl font-semibold mb-4">About Me</h2>
           <div className="space-y-4">
-            {clickedReadMore ? <p className="break-words">{about}</p> : <p className="break-words">{about.slice(0, 400)}...</p>}
+            {clickedReadMore ? (
+              <p className="break-words">{about}</p>
+            ) : (
+              <p className="break-words">{about.slice(0, 400)}...</p>
+            )}
           </div>
           {about.length >= 300 && (
             <Button
@@ -153,17 +202,66 @@ export default function PublicProfile() {
           )}
         </motion.div>
       )}
+      
+      <div className="flex  justify-around text-xl">
+        <p
+          onClick={() => {
+            setShowSnippets(true), fetchUserDetails;
+          }}
+          className={`ease-in-out duration-200 hover:cursor-pointer border-2 px-4 py-1 rounded-lg ${
+            showSnippets === true
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }`}
+        >
+          Snippets
+        </p>
+        <p
+          onClick={() => {
+            setShowSnippets(false), fetchFeedData;
+          }}
+          className={`ease-in-out duration-200 hover:cursor-pointer border-2 px-4 py-1 rounded-lg ${
+            showSnippets === false
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }`}
+        >
+          Feed
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-x-6 gap-y-14 mx-3 mt-10  ">
-        {snippets
-          ?.sort(
-            (a: any, b: any) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-          .map((snippet, index) => (
-            <div key={index}>
-              <CodeCard snippet={snippet} />
-            </div>
-          ))}
+        {showSnippets === true ? (
+          <>
+            {snippets
+              ?.sort(
+                (a: any, b: any) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((snippet, index) => (
+                <div key={index}>
+                  <CodeCard snippet={snippet} />
+                </div>
+              ))}
+          </>
+        ) : (
+          <>
+            {cardData?.map((cardDataItems: ImageCardProps, index: number) => (
+              <motion.div
+                key={index}
+                className="max-w-md w-full min-h-full flex flex-col justify-between rounded-xl overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9 }}
+              >
+                <ImageCard
+                  {...cardDataItems}
+                  handleDeleteFeed={handleDeleteFeed}
+                />
+              </motion.div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

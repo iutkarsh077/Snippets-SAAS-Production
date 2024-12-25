@@ -14,8 +14,15 @@ import { GetUserDetailsInProfile } from "../../../../actions/GetUserDetailsInPro
 import { LogoutUser } from "../../../../actions/LogoutUser";
 import { GetPostForProfile } from "../../../../actions/GetParticularUserPost";
 import { useToast } from "@/hooks/use-toast";
+import ImageCard, {
+  ImageCardProps,
+} from "@/app/feeds/_components/HeaderImageCard";
+import { DeleteFeed } from "../../../../actions/DeleteFeed";
+import { GetLatestFeed } from "../../../../actions/GetLatestFeed";
+import { GetFeedByProfile } from "../../../../actions/GetfeedByProfile";
 
 export default function Profile() {
+  const [cardData, setCardData] = useState<any | null>(null);
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenforCover, setIsOpenForCover] = useState(false);
@@ -31,18 +38,37 @@ export default function Profile() {
   const [userName, setUsername] = useState("");
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
   const [clickedReadMore, setClickedReadMore] = useState(false);
+  const [showSnippets, setShowSnippets] = useState(true);
   const baseUrl = "https://snippets-saas-production.vercel.app";
-  useEffect(() => {
-    const getAllSnippetsForProfile = async () => {
-      setLoading(true);
-      const res = await GetPostForProfile();
-      if (res && res.data) {
-        setSnippets(res.data as any);
-        // console.log(res);
+
+  const getAllSnippetsForProfile = async () => {
+    setLoading(true);
+    const res = await GetPostForProfile();
+    if (res && res.data) {
+      setSnippets(res.data as any);
+      // console.log(res);
+    }
+    setLoading(false);
+  };
+
+  const fetchFeedData = async () => {
+    try {
+      const res = await GetFeedByProfile();
+      if (res.status === false) {
+        throw new Error(res.msg);
       }
+      // console.log(res);
+      setCardData(res?.feedsData);
+    } catch (error) {
+      // console.log(error);
+    } finally {
       setLoading(false);
-    };
+    }
+  };
+
+  useEffect(() => {
     getAllSnippetsForProfile();
+    fetchFeedData();
   }, []);
 
   useEffect(() => {
@@ -86,10 +112,32 @@ export default function Profile() {
     });
   };
 
+  const handleDeleteFeed = async (feedId: string) => {
+    try {
+      setCardData((prevData: any) =>
+        prevData ? prevData.filter((feed: any) => feed.id !== feedId) : prevData
+      );
+      const res = await DeleteFeed(feedId);
+      if (res.status === false) {
+        throw new Error(res.msg);
+      }
+      toast({
+        title: "Feed deleted successfully.",
+        duration: 2000,
+      });
+    } catch (error) {
+      // console.log(error);
+      toast({
+        title: "failed to delete feeds.",
+        duration: 2000,
+      });
+    }
+  };
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen overflow-hidden">
-        <Loader2 className="animate-spin" />
+      <div className="flex justify-center items-center pt-60">
+        <Loader2 className="animate-spin h-16 lg:h-28 w-auto" />
       </div>
     );
   }
@@ -209,17 +257,66 @@ export default function Profile() {
           )}
         </motion.div>
       )}
+
+      <div className="flex  justify-around text-xl">
+        <p
+          onClick={() => {
+            setShowSnippets(true), getAllSnippetsForProfile;
+          }}
+          className={`ease-in-out duration-200 hover:cursor-pointer border-2 px-4 py-1 rounded-lg ${
+            showSnippets === true
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }`}
+        >
+          Snippets
+        </p>
+        <p
+          onClick={() => {
+            setShowSnippets(false), fetchFeedData;
+          }}
+          className={`ease-in-out duration-200 hover:cursor-pointer border-2 px-4 py-1 rounded-lg ${
+            showSnippets === false
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }`}
+        >
+          Feed
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-x-6 gap-y-14 mx-3 mt-10  ">
-        {snippets
-          ?.sort(
-            (a: any, b: any) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-          .map((snippet, index) => (
-            <div key={index}>
-              <CodeCard snippet={snippet} />
-            </div>
-          ))}
+        {showSnippets === true ? (
+          <>
+            {snippets
+              ?.sort(
+                (a: any, b: any) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((snippet, index) => (
+                <div key={index}>
+                  <CodeCard snippet={snippet} />
+                </div>
+              ))}
+          </>
+        ) : (
+          <>
+            {cardData?.map((cardDataItems: ImageCardProps, index: number) => (
+              <motion.div
+                key={index}
+                className="max-w-md w-full min-h-full flex flex-col justify-between rounded-xl overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9 }}
+              >
+                <ImageCard
+                  {...cardDataItems}
+                  handleDeleteFeed={handleDeleteFeed}
+                />
+              </motion.div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

@@ -396,7 +396,7 @@ export default function OneSnippet() {
                       }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between mb-2" onClick={()=>router.push(`/sendMsg/${comment.author.username}`)}>
                         <div className="flex items-center mb-2">
                           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                             {comment.author.name.charAt(0).toUpperCase()}

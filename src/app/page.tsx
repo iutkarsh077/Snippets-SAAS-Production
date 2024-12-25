@@ -1,12 +1,8 @@
-import React from 'react'
-import HomeSection from './(home)/_components/Home'
+import React from "react";
+import HomeSection from "./(home)/_components/Home";
 
 const Home = () => {
-  return (
-    <>
-    <HomeSection/>
-    </>
-  )
-}
+  return <HomeSection />;
+};
 
-export default Home
+export default Home;

@@ -6,6 +6,7 @@ import { IoCloudUpload } from "react-icons/io5";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GetUserDetails } from "../../actions/GetUserDetails";
+import { Aperture, MapPinHouse } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +35,7 @@ export default function Navbar() {
     { name: "DevChat", href: "/userChat" },
     { name: "ArtifyAI", href: "/askAi" },
     { name: "Explore", href: "/explore" },
+    { name: "Feed", href: "/feeds" },
   ];
 
   const containerVariants = {
@@ -86,20 +88,33 @@ export default function Navbar() {
             ))}
           </div>
           <div className="flex items-center gap-x-5">
-            {userDetails && (
-              <Link
-                href="/uploadSnippets"
-                className={`${path === "/snippets" ? "block" : "hidden"}`}
-              >
-                <IoCloudUpload className="text-2xl font-semibold" />
-              </Link>
-            )}
+            <p className="hidden md:block">
+              {userDetails && (
+                <Link
+                  href="/uploadSnippets"
+                  className={`${path === "/snippets" ? "block" : "hidden"}`}
+                >
+                  <IoCloudUpload className="text-2xl font-semibold" />
+                </Link>
+              )}
+              {userDetails && (
+                <Link
+                  href="feeds/uploadfeeds"
+                  className={`${path === "/feeds" ? "block" : "hidden"}`}
+                >
+                  <Aperture className="text-2xl font-semibold" />
+                </Link>
+              )}
+            </p>
             <p className="hidden md:block">
               <SwitchToggle />
             </p>
             <div className="hidden md:block">
               {userDetails ? (
-                <Link href={`/profile`} className="font-semibold dark:text-white text-black">
+                <Link
+                  href={`/profile`}
+                  className="font-semibold dark:text-white text-black"
+                >
                   <div>{userDetails.name}</div>
                 </Link>
               ) : (
@@ -115,28 +130,52 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-x-4">
-            <SwitchToggle />
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="focus:outline-none"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            {userDetails && (
+              <Link
+                href="/uploadSnippets"
+                className={`${path === "/snippets" ? "block" : "hidden"}`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d={
-                    isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
-                  }
-                ></path>
-              </svg>
-            </button>
+                <IoCloudUpload className="text-2xl font-semibold" />
+              </Link>
+            )}
+            {userDetails && (
+              <Link
+                href="feeds/uploadfeeds"
+                className={`${path === "/feeds" ? "block" : "hidden"}`}
+              >
+                <Aperture className="text-2xl font-semibold" />
+              </Link>
+            )}
+            <SwitchToggle />
+            {path === "/feeds" ? (
+              <Link href={"/"}>
+                <MapPinHouse className="text-2xl font-semibold" />
+              </Link>
+            ) : (
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="focus:outline-none"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d={
+                      isOpen
+                        ? "M6 18L18 6M6 6l12 12"
+                        : "M4 6h16M4 12h16M4 18h16"
+                    }
+                  ></path>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -164,7 +203,10 @@ export default function Navbar() {
             ))}
             <div className="block pt-2 md:hidden">
               {userDetails ? (
-                <Link href={`/profile`} className="font-semibold dark:text-white text-black">
+                <Link
+                  href={`/profile`}
+                  className="font-semibold dark:text-white text-black"
+                >
                   <div>{userDetails.name}</div>
                 </Link>
               ) : (

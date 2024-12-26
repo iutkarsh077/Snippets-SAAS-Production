@@ -13,6 +13,7 @@ import {
   ArrowBigUp,
   Loader2,
 } from "lucide-react";
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
@@ -64,6 +65,7 @@ const ImageCard: React.FC<any> = ({
   const [loadingDescription, setLoadingDescription] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLikes = async (feedId: string) => {
@@ -93,9 +95,9 @@ const ImageCard: React.FC<any> = ({
   }, []);
 
   const handleLikeToggle = async (feedId: string) => {
-    if(userId === null) {
+    if (userId === null) {
       return;
-    };
+    }
     try {
       const isCurrentlyLiked = liked;
       const newLikesCount = isCurrentlyLiked
@@ -133,25 +135,28 @@ const ImageCard: React.FC<any> = ({
   };
 
   const handleDownload = async () => {
-    if (!image) return;
-
     try {
       const response = await fetch(image);
       if (!response.ok) throw new Error("Failed to fetch image");
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
+
       const link = document.createElement("a");
       link.href = url;
-      const imageNameWithExtension = image.split("/").pop();
-      const imageName = imageNameWithExtension.split(".")[0];
-      const imageExtension = imageNameWithExtension.split(".").pop();
-      link.download = `${imageName}.${imageExtension}`;
+
+      const fileName = image.split("/").pop() || "image";
+      link.download = fileName.includes(".") ? fileName : `${fileName}.png`;
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
       window.URL.revokeObjectURL(url);
+      setError(null);
     } catch (error) {
-      // console.log(error);
+      console.error("Error downloading image:", error);
+      setError("Failed to download image. Please try again.");
     }
   };
 
@@ -182,12 +187,12 @@ const ImageCard: React.FC<any> = ({
   };
 
   const copyToClipboard = () => {
-    if(!window) return;
+    if (!window) return;
     const url = window.location.origin;
     navigator.clipboard.writeText(`${url}/feeds/${id}`);
     toast({
       title: "URL copied successfully",
-      duration: 1000
+      duration: 1000,
     });
   };
 
@@ -214,7 +219,9 @@ const ImageCard: React.FC<any> = ({
                 <Ellipsis />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="hover:cursor-pointer">
-                <DropdownMenuItem onClick={copyToClipboard}>Share</DropdownMenuItem>
+                <DropdownMenuItem onClick={copyToClipboard}>
+                  Share
+                </DropdownMenuItem>
                 {likes && likes?.userId == author.id && (
                   <>
                     <DropdownMenuItem onClick={() => setEditedFeedDialog(true)}>
@@ -259,11 +266,7 @@ const ImageCard: React.FC<any> = ({
           <Link href={`/feeds/${id}`}>
             {image && (
               <div className="relative w-full h-[300px]">
-                <Image
-                  src={image}
-                  alt={content}
-                  layout="fill"
-                />
+                <Image src={image} alt={content} layout="fill" />
               </div>
             )}
           </Link>
@@ -292,6 +295,11 @@ const ImageCard: React.FC<any> = ({
               className="w-6 h-6 cursor-pointer"
               onClick={handleDownload}
             />
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
           </div>
           {image && feedDescription && (
             <p className="text-sm font-semibold mb-1">
@@ -333,7 +341,8 @@ const ImageCard: React.FC<any> = ({
           <div className="bg-white dark:bg-black  rounded-lg shadow-lg p-6 w-11/12 max-w-md">
             <h2 className="text-xl font-bold mb-1">Edit Feed</h2>
             <h4 className="text-sm mb-4 text-gray-500">
-              Make changes to your profile here. Click save when you&apos;re done.
+              Make changes to your profile here. Click save when you&apos;re
+              done.
             </h4>
             <Textarea
               className="w-full p-2 h-64 resize-none example border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -365,7 +374,9 @@ const ImageCard: React.FC<any> = ({
       {openDeleteFeedDialog && (
         <div className="fixed inset-0 flex justify-center items-center  bg-black bg-opacity-25 z-30">
           <div className="dark:bg-black bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-            <h2 className="text-xl font-bold mb-1 text-black dark:text-white">Delete Feed</h2>
+            <h2 className="text-xl font-bold mb-1 text-black dark:text-white">
+              Delete Feed
+            </h2>
             <h4 className="text-sm mb-4 text-gray-500">
               Confirm that you are permanently deleting the feed.
             </h4>

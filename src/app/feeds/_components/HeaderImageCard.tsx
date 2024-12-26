@@ -134,32 +134,29 @@ const ImageCard: React.FC<any> = ({
   };
 
   const handleDownload = async () => {
-    if(!image) return; 
+    if (!image) return;
+  
+  
     try {
       const response = await fetch(image);
       if (!response.ok) throw new Error("Failed to fetch image");
-
+  
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-
       const link = document.createElement("a");
       link.href = url;
-
-      const fileName = image.split("/").pop() || "image";
-      link.download = fileName.includes(".") ? fileName : `${fileName}.png`;
-
+      link.download = `Image${Math.floor(Math.random() * 1000)}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading image:", error);
+      console.log(error);
       toast({
-        title: "Failed to download image. Please try again.",
+        title: "Please try again after sometime",
         duration: 2000
       })
-    }
+    } 
   };
 
   const handleSaveEditedFeed = async () => {

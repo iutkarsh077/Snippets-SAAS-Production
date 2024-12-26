@@ -10,12 +10,12 @@ import { SnippetType } from "@/app/snippets/page";
 import { useParams } from "next/navigation";
 import { GetDetailsForPublicProfile } from "../../../../../actions/GetUsrDetailsForPublicProfile";
 import { GetPostForPublicProfile } from "../../../../../actions/GetPostForPublicProfile";
-import { GetFeedByProfile } from "../../../../../actions/GetfeedByProfile";
 import ImageCard, {
   ImageCardProps,
 } from "@/app/feeds/_components/HeaderImageCard";
 import { DeleteFeed } from "../../../../../actions/DeleteFeed";
 import { useToast } from "@/hooks/use-toast";
+import { GetFeedForPublicProfile } from "../../../../../actions/GetFeedForPublicProfile";
 
 export default function PublicProfile() {
   const { username } = useParams();
@@ -64,7 +64,7 @@ export default function PublicProfile() {
   };
   const fetchFeedData = async () => {
     try {
-      const res = await GetFeedByProfile();
+      const res = await GetFeedForPublicProfile(username as string);
       if (res.status === false) {
         throw new Error(res.msg);
       }

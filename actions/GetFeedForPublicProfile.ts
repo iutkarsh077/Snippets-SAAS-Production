@@ -4,17 +4,21 @@ import { revalidatePath } from "next/cache";
 import { GetUserDetails } from "./GetUserDetails";
 import prisma from "../prisma";
 
-export async function GetFeedByProfile(){
+export async function GetFeedForPublicProfile(username: string){
     revalidatePath("/feeds");
     try {
-        const userDetails = await GetUserDetails();
+        const userDetails = await prisma.user.findFirst({
+            where: {
+                username: username
+            }
+        });
         if(!userDetails){
             return { msg: "Failed to get the Feeds", status: false };
         }
 
         const getFeeds = await prisma.feeds.findMany({
             where: {
-                authorId: userDetails?.decodeCookieValue?.id
+                authorId: userDetails?.id
             },
             include: {
                 author: {

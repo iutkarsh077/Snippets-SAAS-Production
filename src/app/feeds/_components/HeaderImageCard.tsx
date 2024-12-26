@@ -65,7 +65,6 @@ const ImageCard: React.FC<any> = ({
   const [loadingDescription, setLoadingDescription] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLikes = async (feedId: string) => {
@@ -135,6 +134,7 @@ const ImageCard: React.FC<any> = ({
   };
 
   const handleDownload = async () => {
+    if(!image) return; 
     try {
       const response = await fetch(image);
       if (!response.ok) throw new Error("Failed to fetch image");
@@ -153,10 +153,12 @@ const ImageCard: React.FC<any> = ({
       document.body.removeChild(link);
 
       window.URL.revokeObjectURL(url);
-      setError(null);
     } catch (error) {
       console.error("Error downloading image:", error);
-      setError("Failed to download image. Please try again.");
+      toast({
+        title: "Failed to download image. Please try again.",
+        duration: 2000
+      })
     }
   };
 
@@ -295,11 +297,6 @@ const ImageCard: React.FC<any> = ({
               className="w-6 h-6 cursor-pointer"
               onClick={handleDownload}
             />
-            {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
           </div>
           {image && feedDescription && (
             <p className="text-sm font-semibold mb-1">

@@ -13,7 +13,6 @@ import {
   ArrowBigUp,
   Loader2,
 } from "lucide-react";
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
@@ -133,10 +132,9 @@ const ImageCard: React.FC<any> = ({
     }
   };
 
+  /*
   const handleDownload = async () => {
     if (!image) return;
-  
-  
     try {
       const response = await fetch(image);
       if (!response.ok) throw new Error("Failed to fetch image");
@@ -158,6 +156,7 @@ const ImageCard: React.FC<any> = ({
       })
     } 
   };
+  */
 
   const handleSaveEditedFeed = async () => {
     try {
@@ -290,10 +289,10 @@ const ImageCard: React.FC<any> = ({
               />
               {/* <Send className="w-6 h-6 cursor-pointer" /> */}
             </div>
-            <Bookmark
+            {/* <Bookmark
               className="w-6 h-6 cursor-pointer"
               onClick={handleDownload}
-            />
+            /> */}
           </div>
           {image && feedDescription && (
             <p className="text-sm font-semibold mb-1">

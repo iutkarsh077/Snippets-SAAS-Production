@@ -151,7 +151,8 @@ const OneFeed: React.FC<any> = () => {
     }
   };
 
-  const handleDownload = async () => {
+  /*
+    const handleDownload = async () => {
     if (!image) return;
 
     try {
@@ -173,6 +174,7 @@ const OneFeed: React.FC<any> = () => {
       // console.log(error);
     }
   };
+  */
 
   const handleSaveEditedFeed = async () => {
     try {
@@ -332,10 +334,10 @@ const OneFeed: React.FC<any> = () => {
                 className="h-6 w-[40%] cursor-pointer"
               />
             </div>
-            <Bookmark
+            {/* <Bookmark
               className="w-6 h-6 cursor-pointer"
               onClick={handleDownload}
-            />
+            /> */}
           </div>
           {image && feedDescription && (
             <p className="text-sm font-semibold mb-1">

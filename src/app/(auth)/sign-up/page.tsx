@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useDebounceCallback } from "usehooks-ts";
 import { useEffect, useState } from "react";
 import { CheckUsernameUnique } from "../../../../actions/CheckUsernameAvailable";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { CreateUserAccount } from "../../../../actions/CreateUserAccount";
 import LeftSideSnippet from "../_components/LeftSideSnippet";
 import OtpForSignup from "../_components/OtpForSignup";
@@ -17,6 +17,7 @@ export default function SignUp() {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const debouncedUsername = useDebounceCallback(setMyUsername, 500);
   const [renderOtpForSignup, setRenderOtpForSignup] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -72,6 +73,11 @@ export default function SignUp() {
   if(renderOtpForSignup){
     return <OtpForSignup username={myusername}/>
   }
+
+  const togglePasswordVisibility = () =>{
+    setShowPassword(!showPassword)
+  }
+
 
   return (
     <div className="flex flex-col lg:flex-row w-full h-auto">
@@ -169,7 +175,7 @@ export default function SignUp() {
           </div>
 
           {/* Password Field */}
-          <div>
+          <div className="relative">
             <label
               htmlFor="password"
               className="block text-sm font-semibold text-gray-700 mb-2"
@@ -178,11 +184,14 @@ export default function SignUp() {
             </label>
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password")}
               placeholder="********"
               className="w-full px-4 py-3 dark:text-black bg-gray-100 rounded-xl outline-none transition"
             />
+             {
+              showPassword ? (<Eye  onClick={togglePasswordVisibility} className="absolute right-3 text-black top-3/4 transform -translate-y-3/4 cursor-pointer"/>) : (<EyeOff  onClick={togglePasswordVisibility} className="absolute right-3 top-3/4 transform -translate-y-3/4 cursor-pointer text-black"/>)
+            }
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>
             )}

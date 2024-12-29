@@ -9,10 +9,12 @@ import ForgotPassword from "../_components/ForgotPassword";
 import { LoginUser } from "../../../../actions/LoginAction";
 import { useRouter } from "next/navigation";
 import VerifyEmail from "../_components/VerifyEmail";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignIn() {
   const [renderPassword, setRenderPassword] = useState(false);
   const [renderVerifyEmail, setRenderVerifyEmail] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -47,6 +49,12 @@ export default function SignIn() {
   if(renderVerifyEmail){
     return <VerifyEmail/>
   }
+
+  const togglePasswordVisibility = () =>{
+    setShowPassword(!showPassword)
+  }
+
+
   return (
     <div className="flex flex-col lg:flex-row w-full h-auto min-h-screen">
       {/* Left-side (hidden on small screens) */}
@@ -97,20 +105,25 @@ export default function SignIn() {
           </div>
 
           {/* Password Field */}
-          <div>
+          <div className="relative">
             <label
               htmlFor="password"
               className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Password
             </label>
+            
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password")}
               placeholder="********"
               className="w-full px-4 py-3 bg-gray-100 dark:text-black rounded-xl outline-none transition"
             />
+            {
+              showPassword ? (<Eye  onClick={togglePasswordVisibility} className="absolute right-3 text-black top-3/4 transform -translate-y-3/4 cursor-pointer"/>) : (<EyeOff  onClick={togglePasswordVisibility} className="absolute right-3 top-3/4 transform -translate-y-3/4 cursor-pointer text-black"/>)
+            }
+            
             {errors.password?.message && (
               <div className="text-red-500 pt-2">{errors.password.message}</div>
             )}

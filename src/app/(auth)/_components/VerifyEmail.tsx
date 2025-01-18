@@ -74,7 +74,7 @@ const VerifyEmail = () => {
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
+        className="w-full mt-20 lg:mt-0 lg:w-3/5 px-6 sm:px-10 md:px-16 lg:px-20 py-10 sm:py-20 flex flex-col justify-center"
       >
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold dark:text-white text-gray-800 mb-4">
           Verify Email

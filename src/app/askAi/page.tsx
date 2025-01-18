@@ -55,7 +55,7 @@ const Artify = () => {
     }
   };
   return (
-    <div className="min-h-screen p-4 pb-24">
+    <div className="min-h-screen p-4 pb-24 mt-16">
       <AnimatePresence>
         {responseFromGemini.length > 0 && (
           <motion.div

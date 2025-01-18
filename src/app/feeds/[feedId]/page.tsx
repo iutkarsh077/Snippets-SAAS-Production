@@ -242,7 +242,7 @@ const OneFeed: React.FC<any> = () => {
   };
 
   return (
-    <div className="flex justify-center mt-5">
+    <div className="flex justify-center mt-16">
       <Card className="w-full max-w-lg overflow-hidden border-none">
         <CardHeader className="p-4">
           <div className="flex justify-between items-center">

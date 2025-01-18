@@ -34,13 +34,13 @@ const MainSnippets = () => {
   if (loading) {
     return (
       <div className="flex justify-center mt-40">
-        <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+        <Loader2 className="animate-spin h-16 lg:h-28 w-auto" />
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10  mt-10 xl:ml-20 xl:mr-20 ml-3 mr-3 pb-10">
+    <div className="grid grid-cols-1   sm:grid-cols-2 lg:grid-cols-3 gap-10  mt-20 xl:ml-20 xl:mr-20 ml-3 mr-3 pb-10">
       {snippets &&
         snippets
           .sort((a: { createdAt: any }, b: { createdAt: any }) => {

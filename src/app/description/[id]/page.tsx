@@ -209,13 +209,13 @@ export default function OneSnippet() {
     return (
       <div className="relative h-96 w-screen overflow-hidden example flex justify-center items-center">
         {" "}
-        <Loader2 className="w-10 h-10 animate-spin" />
+        <Loader2 className="animate-spin h-16 lg:h-28 w-auto" />
       </div>
     );
   }
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex mt-16">
       <div className="xl:w-2/3 w-full pl-2 xl:pl-0 pr-2 xl:pr-0">
         {singlePost && (
           <div className="flex flex-col-reverse lg:ml-20 mt-14 w-full justify-center gap-x-10">

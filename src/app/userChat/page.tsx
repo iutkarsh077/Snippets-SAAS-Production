@@ -116,7 +116,7 @@ export default function MessageList() {
   // console.log(messages);
   // console.log(selectedUserId)
   return (
-    <div className="md:px-40">
+    <div className="md:px-40 mt-16">
       {userList && messages && (
         <div className="flex h-screen">
           {/* Left Side - User List */}

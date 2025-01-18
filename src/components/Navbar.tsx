@@ -1,19 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 import SwitchToggle from "@/components/Toggle/Switch";
 import { IoCloudUpload } from "react-icons/io5";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GetUserDetails } from "../../actions/GetUserDetails";
-import { Aperture, MapPinHouse } from "lucide-react";
+import { Aperture, Bug, MapPinHouse } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userDetails, setUserDetails] = useState<any>(null);
   const path = usePathname();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getUserDetails = async () => {
       try {
         const res = await GetUserDetails();
@@ -34,8 +34,8 @@ export default function Navbar() {
     { name: "Snippets", href: "/snippets" },
     { name: "DevChat", href: "/userChat" },
     { name: "ArtifyAI", href: "/askAi" },
-    { name: "Explore", href: "/explore" },
     { name: "Feed", href: "/feeds" },
+    { name: "Explore", href: "/explore" },
   ];
 
   const containerVariants = {
@@ -58,7 +58,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="z-50"
+      className="z-50 fixed top-0  w-full dark:bg-black bg-white"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -105,6 +105,14 @@ export default function Navbar() {
                   <Aperture className="text-2xl font-semibold" />
                 </Link>
               )}
+              {userDetails && (
+                <Link
+                  href="/explore/bugtracker/addBug"
+                  className={`${path === "/explore/bugtracker" ? "block" : "hidden"}`}
+                >
+                  <Bug className="text-2xl font-semibold" />
+                </Link>
+              )}
             </p>
             <p className="hidden md:block">
               <SwitchToggle />
@@ -146,6 +154,14 @@ export default function Navbar() {
                 <Aperture className="text-2xl font-semibold" />
               </Link>
             )}
+            {userDetails && (
+                <Link
+                  href="/explore/bugtracker/addBug"
+                  className={`${path === "/explore/bugtracker" ? "block" : "hidden"}`}
+                >
+                  <Bug className="text-2xl font-semibold" />
+                </Link>
+              )}
             <SwitchToggle />
             {path === "/feeds" ? (
               <Link href={"/"}>
@@ -187,7 +203,7 @@ export default function Navbar() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden  text-white"
+          className="md:hidden  text-white dark:bg-black bg-white"
         >
           <div className="flex flex-col items-center space-y-4 py-4">
             {navLinks.map((link: any, index: number) => (

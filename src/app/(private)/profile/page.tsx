@@ -143,7 +143,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto bg-background mb-20">
+    <div className="max-w-7xl mx-auto bg-background mb-20 mt-16">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

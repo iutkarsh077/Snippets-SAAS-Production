@@ -14,7 +14,7 @@ const UploadSnippets = () => {
     const [showDescriptionBox, setshowDescriptionBox] = useState(false);
 
   return (
-    <div className="flex flex-col items-center w-full ml-2 pr-2 xl:ml-0 xl:pr-0 mt-10">
+    <div className="flex flex-col items-center w-full ml-2 pr-2 xl:ml-0 xl:pr-0 mt-20">
         <div className={`${showCodeCard === true ? "block" : "hidden"} w-full flex justify-center`}><CodeCard code={code} setCode={setCode} setShowCodeCard={setShowCodeCard} setShowSearchLanguage={setShowSearchLanguage}/></div>
         <div className={`${showSearchLanguage === true ? "block" : "hidden"} w-full`}><SearchLanguage lang={lang} setLang={setLang} setShowSearchLanguage={setShowSearchLanguage} setshowDescriptionBox={setshowDescriptionBox}/></div>
         

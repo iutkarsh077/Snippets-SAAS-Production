@@ -1,5 +1,5 @@
 "use client";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import type { FC } from "react";
 import { format } from "date-fns";
 import { Loader2, X } from "lucide-react";
@@ -15,10 +15,36 @@ import { exampleStatuses } from "./constant";
 import { GetBugs } from "../../../../../actions/GetBugs";
 import { UpdateBugStatus } from "../../../../../actions/UpdateBugStatus";
 import { DeleteBug } from "../../../../../actions/DeleteBug";
+import { useToast } from "@/hooks/use-toast";
+import { GetUserDetails } from "../../../../../actions/GetUserDetails";
+import { useRouter } from "next/navigation";
 
 const KanbanExample: FC = () => {
   const [features, setFeatures] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  useLayoutEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await GetUserDetails();
+        if (res.status === false) {
+          throw new Error(res.msg);
+        }
+        setUserDetails(res?.decodeCookieValue?.id);
+      } catch (error) {
+        toast({
+          title: "Login Kro",
+          description: "Please Login to explore this.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserDetails();
+  }, []);
 
   useLayoutEffect(() => {
     const fetchBugs = async () => {
@@ -89,14 +115,6 @@ const KanbanExample: FC = () => {
       console.log(error);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center mt-40">
-        <Loader2 className="animate-spin h-16 lg:h-28 w-auto" />
-      </div>
-    );
-  }
 
   return (
     <KanbanProvider

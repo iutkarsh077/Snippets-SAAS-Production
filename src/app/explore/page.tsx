@@ -8,7 +8,7 @@ const data = [
     path: "/explore/imageUpload",
     
     mainImage:
-      "https://cdni.iconscout.com/illustration/premium/thumb/upload-image-illustration-download-in-svg-png-gif-file-formats--photo-digital-backup-storage-pack-network-communication-illustrations-3618850.png?f=webp",
+      "http://res.cloudinary.com/dakddv1pm/image/upload/v1737197135/posts/qjwllc7qqilrfc33600s.jpg",
   },
   {
     title: "Bug Tracker",
@@ -16,13 +16,13 @@ const data = [
     path: "/explore/bugtracker",
     
     mainImage:
-      "http://res.cloudinary.com/dakddv1pm/image/upload/v1736936797/posts/fuztxkoqhz48nonnily7.jpg",
+      "http://res.cloudinary.com/dakddv1pm/image/upload/v1737197037/posts/spuzbvkdy5mqsk7lr63e.jpg",
   },
 ];
 
 const Explore = () => {
   return (
-    <div className="grid grid-cols-1 space-x-5 md:grid-cols-2 xl:grid-cols-3 lg:pl-8 ">
+    <div className="grid grid-cols-1 md:space-x-5 md:grid-cols-2 xl:grid-cols-3 lg:pl-8 ">
       {data.map((d: propTypes, index: number) => (
         <ExploreCard
           key={index}

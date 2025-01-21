@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { GetUserDetails } from "./GetUserDetails";
 import prisma from "../prisma";
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
 
 interface dataTypes {
     text: string,
@@ -29,6 +32,8 @@ export async function SaveFeedPost(data: dataTypes) {
             }
         })
         // console.log(savePost)
+        await redis.del("latestfeed");
+        
         return { msg: "Post Saved successfully!", status: true };
     } catch (error) {
         return { msg: "Internal Server Error", status: false };

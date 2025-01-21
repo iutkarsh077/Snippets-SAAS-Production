@@ -43,6 +43,7 @@ export interface ImageCardProps {
   updatedAt: Date;
   author: Author;
   handleDeleteFeed: (feedId: string) => void;
+  AllowedToDelete?: boolean;
 }
 
 const ImageCard: React.FC<any> = ({
@@ -52,6 +53,7 @@ const ImageCard: React.FC<any> = ({
   image,
   createdAt,
   handleDeleteFeed,
+  AllowedToDelete = true,
 }) => {
   const [clickedReadMore, setClickedReadMore] = useState(false);
   const [likes, setLikes] = useState<any>(null);
@@ -222,15 +224,21 @@ const ImageCard: React.FC<any> = ({
                 </DropdownMenuItem>
                 {likes && likes?.userId == author.id && (
                   <>
-                    <DropdownMenuItem onClick={() => setEditedFeedDialog(true)}>
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-red-500"
-                      onClick={() => setOpenDeleteFeedDialog(true)}
-                    >
-                      Delete
-                    </DropdownMenuItem>
+                    {AllowedToDelete && (
+                      <DropdownMenuItem
+                        onClick={() => setEditedFeedDialog(true)}
+                      >
+                        Edit
+                      </DropdownMenuItem>
+                    )}
+                    {AllowedToDelete && (
+                      <DropdownMenuItem
+                        className="text-red-500"
+                        onClick={() => setOpenDeleteFeedDialog(true)}
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    )}
                   </>
                 )}
               </DropdownMenuContent>

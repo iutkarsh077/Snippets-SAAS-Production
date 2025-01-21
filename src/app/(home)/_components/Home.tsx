@@ -83,6 +83,7 @@ const HomeSection = () => {
               <ImageCard
                 {...cardDataItems}
                 handleDeleteFeed={handleDeleteFeed}
+                AllowedToDelete={false}
               />
             </motion.div>
           ))}

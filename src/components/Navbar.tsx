@@ -28,6 +28,7 @@ export default function Navbar() {
     };
     getUserDetails();
   }, [path]);
+  
 
   const navLinks = [
     { name: "Dashboard", href: "/" },

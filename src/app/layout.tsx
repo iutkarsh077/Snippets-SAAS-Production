@@ -4,6 +4,7 @@ import { NextThemeProvider } from "@/components/NextUItheme";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 
 const poppinsFont = Poppins({
   subsets: ["latin"],
@@ -30,6 +31,18 @@ export default function RootLayout({
         <body
           className={`${poppinsFont.className}`}
         >
+          <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-S0H0LHTJ42"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-S0H0LHTJ42');
+          `}
+        </Script>
           <Navbar />
           {children}
           <Toaster />

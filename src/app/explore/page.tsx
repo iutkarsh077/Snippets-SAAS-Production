@@ -6,7 +6,6 @@ const data = [
     title: "Generate Image Link",
     description: "Upload an image, get the link, and use it anywhere.",
     path: "/explore/imageUpload",
-    
     mainImage:
       "http://res.cloudinary.com/dakddv1pm/image/upload/v1737197135/posts/qjwllc7qqilrfc33600s.jpg",
   },

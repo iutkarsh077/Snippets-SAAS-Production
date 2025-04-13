@@ -71,7 +71,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 items-center">
+          <div className="hidden lg:flex space-x-8 items-center">
             {navLinks.map((link, index) => (
               <motion.div
                 key={index}
@@ -88,7 +88,7 @@ export default function Navbar() {
             ))}
           </div>
           <div className="flex items-center gap-x-5">
-            <p className="hidden md:block">
+            <p className="hidden lg:block">
               {userDetails && (
                 <Link
                   href="/uploadSnippets"
@@ -114,10 +114,10 @@ export default function Navbar() {
                 </Link>
               )}
             </p>
-            <p className="hidden md:block">
+            <p className="hidden lg:block">
               <SwitchToggle />
             </p>
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               {userDetails ? (
                 <Link
                   href={`/profile`}
@@ -137,7 +137,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-x-4">
+          <div className="flex lg:hidden items-center gap-x-4">
             {userDetails && (
               <Link
                 href="/uploadSnippets"
@@ -203,7 +203,7 @@ export default function Navbar() {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden  text-white dark:bg-black bg-white"
+          className="lg:hidden  text-white dark:bg-black bg-white"
         >
           <div className="flex flex-col items-center space-y-4 py-4">
             {navLinks.map((link: any, index: number) => (
@@ -217,7 +217,7 @@ export default function Navbar() {
                 </Link>
               </p>
             ))}
-            <div className="block pt-2 md:hidden">
+            <div className="block pt-2 lg:hidden">
               {userDetails ? (
                 <Link
                   href={`/profile`}

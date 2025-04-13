@@ -124,7 +124,7 @@ export default function PublicProfile() {
           <Image
             src={
               coverImage ||
-              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
+              "http://res.cloudinary.com/dakddv1pm/image/upload/v1744560220/posts/vzw9nmxv2v4eab4ysgdu.jpg"
             }
             alt="Profile banner"
             width={768}
@@ -138,7 +138,7 @@ export default function PublicProfile() {
           <Image
             src={
               profileImage ||
-              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
+              "http://res.cloudinary.com/dakddv1pm/image/upload/v1744560220/posts/vzw9nmxv2v4eab4ysgdu.jpg"
             }
             alt="Profile picture"
             width={150}

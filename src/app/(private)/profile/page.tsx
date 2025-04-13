@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CustomDialog from "./_components/CustomDialog";
 import CustomDialogForProfileImage from "./_components/CustomDialogProfileImage";
 import DialogForOtherSections from "./_components/DialogForOtherSection";
@@ -51,7 +51,7 @@ export default function Profile() {
     setLoading(false);
   };
 
-  const fetchFeedData = async () => {
+  const fetchFeedData = useCallback(async () => {
     try {
       const res = await GetFeedByProfile();
       if (res.status === false) {
@@ -64,7 +64,7 @@ export default function Profile() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [])
 
   useEffect(() => {
     getAllSnippetsForProfile();
@@ -162,7 +162,7 @@ export default function Profile() {
           <Image
             src={
               coverImage ||
-              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
+              "http://res.cloudinary.com/dakddv1pm/image/upload/v1744560220/posts/vzw9nmxv2v4eab4ysgdu.jpg"
             }
             alt="Profile banner"
             width={768}
@@ -183,7 +183,7 @@ export default function Profile() {
           <Image
             src={
               profileImage ||
-              "https://coolbackgrounds.io/images/backgrounds/black/pure-black-background-f82588d3.jpg"
+              "http://res.cloudinary.com/dakddv1pm/image/upload/v1744560220/posts/vzw9nmxv2v4eab4ysgdu.jpg"
             }
             alt="Profile picture"
             width={150}

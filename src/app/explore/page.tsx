@@ -38,6 +38,7 @@ const data = [
   },
 ];
 
+
 const Explore = () => {
   return (
     <div className="grid grid-cols-1 md:space-x-5 lg:grid-cols-2 lg:pl-8 ">

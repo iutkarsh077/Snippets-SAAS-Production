@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "../_components/Header";
 import CodeCard from "../_components/Card";
 import { HeroScrollDemo } from "../_components/HeroScrollDemo";
@@ -20,7 +20,7 @@ const HomeSection = () => {
   const [loading, setLoading] = useState(false);
   const [snippets, setSnippets] = useState<SnippetType[] | null>(null);
 
-  const fetchFeedData = async () => {
+  const fetchFeedData = useCallback(async () => {
     try {
       const res = await GetLatestFeed();
       if (res.status === false) {
@@ -33,7 +33,7 @@ const HomeSection = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchFeedData();

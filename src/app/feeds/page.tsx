@@ -62,19 +62,19 @@ const Feed = () => {
   }
 
   return (
-    <div className="w-full  fixed top-20 flex justify-center left-0 h-screen  text-white">
-      <div className="overflow-y-scroll w-full  lg:w-[33%]  h-full example lg:border-x-2 lg:border-t-2 lg:rounded-lg border-none">
-        {cardData?.map((cardDataItems: ImageCardProps, index: number) => (
-          <div key={index}>
-            <ImageCard
-              {...cardDataItems}
-              handleDeleteFeed={handleDeleteFeed}
-             
-            />
-          </div>
-        ))}
-      </div>
+    <div className="fixed top-20 left-0 w-full h-screen pb-36 sm:pb-96 lg:pb-20  text-white flex justify-center">
+    <div className="w-full max-w-[600px] h-full overflow-y-scroll example border-none lg:border-x-2 lg:border-t-2 lg:rounded-lg px-4">
+      {cardData?.map((cardDataItems: ImageCardProps, index: number) => (
+        <div key={index}>
+          <ImageCard
+            {...cardDataItems}
+            handleDeleteFeed={handleDeleteFeed}
+          />
+        </div>
+      ))}
     </div>
+  </div>
+  
   );
 };
 

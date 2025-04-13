@@ -95,8 +95,9 @@ export default function OneSnippet() {
         }
         setLoading(true);
         const res = await GetSinglePost(id);
-        // console.log(res);
+        console.log(res);
         const userId = await GetUserDetails();
+        console.log(userId);
         if (userId.status === false) {
           throw new Error(userId.msg);
         }
@@ -218,7 +219,7 @@ export default function OneSnippet() {
     <div className="w-full flex mt-16">
       <div className="xl:w-2/3 w-full pl-2 xl:pl-0 pr-2 xl:pr-0">
         {singlePost && (
-          <div className="flex flex-col-reverse lg:ml-20 mt-14 w-full justify-center gap-x-10">
+          <div className="flex flex-col-reverse lg:ml-10 2xl:ml-20 mt-14 w-full justify-center gap-x-10">
             <motion.div
               className="max-w-3xl w-full flex flex-col bg-gray-900 rounded-xl shadow-xl overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
@@ -396,8 +397,13 @@ export default function OneSnippet() {
                       }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="flex items-center justify-between mb-2" onClick={()=>router.push(`/sendMsg/${comment.author.username}`)}>
-                        <div className="flex items-center mb-2">
+                      <div className="flex items-center justify-between mb-2">
+                        <div
+                          className="flex items-center mb-2"
+                          onClick={() =>
+                            router.push(`/profile/${comment.author.username}`)
+                          }
+                        >
                           <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
                             {comment.author.name.charAt(0).toUpperCase()}
                           </div>
@@ -425,7 +431,15 @@ export default function OneSnippet() {
                               }}
                             />
                           ) : (
-                            ""
+                            <div onClick={() =>
+                              router.push(`/sendMsg/${comment.author.username}`)
+                            }>
+                              <button
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                              >
+                                Chat
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -445,7 +459,7 @@ export default function OneSnippet() {
           </>
         )}
       </div>
-      <div className=" space-y-14 w-1/3 mt-14 xl:block hidden">
+      <div className=" space-y-14 w-1/3 mt-14 pr-10  xl:block hidden">
         {snippets
           ?.sort(
             (a: any, b: any) =>

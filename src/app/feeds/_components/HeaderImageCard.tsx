@@ -13,7 +13,7 @@ import {
   ArrowBigUp,
   Loader2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { FeedLikesIncreaseorDecrease } from "../../../../actions/FeedLikesIncreaseOrDecrease";
@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SaveEditedFeed } from "../../../../actions/SaveEditedFeed";
 import { useToast } from "@/hooks/use-toast";
-import { GetUserDetails } from "../../../../actions/GetUserDetails";
 
 export interface Author {
   id: string;
@@ -67,30 +66,31 @@ const ImageCard: React.FC<any> = ({
   const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
-  useEffect(() => {
-    const fetchLikes = async (feedId: string) => {
-      try {
-        const res = await GetLikesOfFeed(feedId);
+  const fetchLikes = useCallback(async (feedId: string) => {
+    try {
+      const res = await GetLikesOfFeed(feedId);
 
-        if (res.status === false) {
-          throw new Error(res.msg);
-        }
-
-        setLikes(res.data);
-        setUserId(res.data?.userId);
-        if (
-          res.data?.getAllLikes.some(
-            (like) => like.authorId === res.data.userId
-          )
-        ) {
-          setLiked(true);
-        } else {
-          setLiked(false);
-        }
-      } catch (error) {
-        // console.log(error);
+      if (res.status === false) {
+        throw new Error(res.msg);
       }
-    };
+
+      setLikes(res.data);
+      setUserId(res.data?.userId);
+      if (
+        res.data?.getAllLikes.some(
+          (like) => like.authorId === res.data.userId
+        )
+      ) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    } catch (error) {
+      // console.log(error);
+    }
+  }, [])
+
+  useEffect(() => {
     fetchLikes(id);
   }, []);
 
@@ -272,7 +272,7 @@ const ImageCard: React.FC<any> = ({
           <Link href={`/feeds/${id}`}>
             {image && (
               <div className="relative w-full h-[300px]">
-                <Image src={image} alt={content} layout="fill" />
+                <Image src={image} alt={content} className="object-contain" layout="fill" />
               </div>
             )}
           </Link>

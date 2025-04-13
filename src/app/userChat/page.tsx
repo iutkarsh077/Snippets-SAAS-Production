@@ -8,6 +8,7 @@ import { GetChat } from "../../../actions/GetChat";
 import { AlignJustify, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
 
 const generateRoomId = (user1Id: string, user2Id: string) =>
   [user1Id, user2Id].sort().join("-");
@@ -20,6 +21,7 @@ export default function MessageList() {
   const [roomId, setRoomId] = useState("room1");
   const [selectedUserId, setSelectedUserId] = useState("");
   const [showUserList, setShowUserList] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!selectedUserId) return;
@@ -88,6 +90,13 @@ export default function MessageList() {
   };
   const handleTestClick = async () => {
     // console.log(roomId);
+    if(inputMsg.length <= 0){
+      toast({
+        title: "Empty message is not allowed!",
+        duration: 1000
+      })
+      return;
+    }
     const data = await fetch("/api/test", {
       method: "POST",
       headers: {

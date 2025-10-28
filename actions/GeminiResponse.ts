@@ -1,57 +1,70 @@
-'use server'
+"use server";
+import { GoogleGenAI } from "@google/genai";
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// Initialize the Google AI client
-const googleAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
-const geminiModel = googleAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+const ai = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_GEMINI_API_KEY!,
 });
 
-// Helper function to generate content
-const generate = async (question: string) => {
-  try {
-    const result = await geminiModel.generateContent(question);
-    const response = await result.response.text();
-    return response;
-  } catch (error: any) {
-    console.error("Error generating content from AI:", error.message);
-    throw new Error("Failed to generate AI content");
-  }
+type Message = {
+  role: "user" | "model";
+  parts: { text: string }[];
 };
 
-// Server Action
+const systemPrompt = `You are a helpful, knowledgeable, and friendly AI assistant. 
+Your goal is to provide accurate, clear, and concise answers to user questions.
+When referencing previous parts of the conversation, acknowledge the context naturally.
+Be conversational but professional in your responses.`;
+
+const conversationHistory: Message[] = [];
+
 export async function askAI(data: any) {
   try {
-    // Get the question from formData if using with a form
-    const { question } = data; 
+    const { question } = data;
 
-    if (!question || typeof question !== 'string') {
+    if (!question || typeof question !== "string") {
       throw new Error("Invalid or missing question");
     }
 
-    // Generate the response
-    const result = await generate(question);
-    
-    if (!result) {
+    conversationHistory.push({
+      role: "user",
+      parts: [{ text: question }],
+    });
+
+    // console.log("conversation history si: ", conversationHistory)
+
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: conversationHistory, 
+      config: {
+        systemInstruction: systemPrompt,
+      },
+    });
+
+    if (!result || !result.text) {
       throw new Error("No content generated from the AI");
     }
 
-    // Return successful response
-    return { 
-      data: result, 
-      error: null,
-      status: true
-    };
 
+    conversationHistory.push({
+      role: "model",
+      parts: [{ text: result.text }],
+    });
+
+    return {
+      data: result.text,
+      error: null,
+      status: true,
+    };
   } catch (error) {
     console.error("askAI error:", error);
-    
-    // Return error response
-    return { 
-      data: null, 
-      error: "An error occurred while processing your request",
-      status: false
+
+    return {
+      data: null,
+      error:
+        error instanceof Error
+          ? error.message
+          : "An error occurred while processing your request",
+      status: false,
     };
   }
 }

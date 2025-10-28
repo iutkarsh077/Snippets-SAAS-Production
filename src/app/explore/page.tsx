@@ -32,9 +32,16 @@ const data = [
     title: "Shyllido",
     description: "Convert your prompt into an image with the help of AI.",
     path: "/explore/image-generator",
-    
     mainImage:
       "http://res.cloudinary.com/dakddv1pm/image/upload/v1742802688/posts/zrkfbuhbbwxjgfwj6fj7.webp",
+  },
+
+  {
+    title: "AI Interview",
+    description: "A minimal and elegant AI-powered interviewer app.",
+    path: "/explore/interviewer",
+    mainImage:
+      "http://res.cloudinary.com/dakddv1pm/image/upload/v1761366070/posts/o7hpjhqsrqcsegclfor2.png",
   },
 ];
 

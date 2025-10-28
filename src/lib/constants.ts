@@ -19,3 +19,21 @@ export const CODE_SNIPPETS = {
   c: `#include <stdio.h>\n\nint main() {\n\tchar name[] = "Alex";\n\tprintf("Hello, %s!\\n", name);\n\treturn 0;\n}\n`,
   cpp: `#include <iostream>\n#include <string>\n\nint main() {\n\tstd::string name = "Alex";\n\tstd::cout << "Hello, " << name << "!" << std::endl;\n\treturn 0;\n}\n`
 };
+
+export const INTERVIEWER_INFO = [
+  {
+    id: 1,
+    image: "/man1.jpg",
+    title: "Empathatic Bob"
+  },
+  {
+    id: 2,
+    image: "/women1.jpg",
+    title: "Explorer Lisa"
+  },
+  {
+    id: 3,
+    image: "/man2.jpg",
+    title: "Speedy Adam"
+  }
+]

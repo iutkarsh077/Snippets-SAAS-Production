@@ -24,16 +24,19 @@ export const INTERVIEWER_INFO = [
   {
     id: 1,
     image: "/man1.jpg",
-    title: "Empathatic Bob"
+    title: "Empathatic Bob",
+    description: "I am Bob, an AI interviewer built to conduct smart, unbiased, and efficient interviews. I analyze responses in real time, adapt my questions intelligently, and provide detailed insights to help organizations identify the most qualified and suitable candidates effortlessly."
   },
   {
     id: 2,
     image: "/women1.jpg",
-    title: "Explorer Lisa"
+    title: "Explorer Lisa",
+    description: "I am Lisa, an AI career coach designed to guide professionals toward success. I analyze skills, suggest personalized growth paths, and offer interview tips and feedback to help individuals achieve their career goals with confidence and clarity."
   },
   {
     id: 3,
     image: "/man2.jpg",
-    title: "Speedy Adam"
+    title: "Speedy Adam",
+    description: "I am Speedy Adam, an AI productivity assistant built for speed and efficiency. I automate repetitive tasks, organize schedules, and optimize workflows, helping teams save time, boost focus, and accomplish more with less effort every single day."
   }
 ]

@@ -99,7 +99,6 @@ const ImageCard: React.FC<any> = ({
       return;
     }
     try {
-      console.log("Is liked: ", liked)
       const isCurrentlyLiked = liked;
       const newLikesCount = isCurrentlyLiked
         ? likes.likesCount - 1
@@ -111,19 +110,19 @@ const ImageCard: React.FC<any> = ({
         likesCount: newLikesCount,
       }));
 
-      const res = await FeedLikesIncreaseorDecrease(feedId, liked);
+      const res = await FeedLikesIncreaseorDecrease(feedId);
 
       if (!res.status) {
         throw new Error(res.msg);
       }
 
-      // const updatedLikes = res?.data?.getAllLikes || [];
-      // const userHasLiked = updatedLikes.some(
-      //   (like) => like.authorId === res?.data?.userId
-      // );
+      const updatedLikes = res?.data?.getAllLikes || [];
+      const userHasLiked = updatedLikes.some(
+        (like) => like.authorId === res?.data?.userId
+      );
 
-      // setLikes(res.data);
-      // setLiked(userHasLiked);
+      setLikes(res.data);
+      setLiked(userHasLiked);
     } catch (error) {
       // console.error("Error toggling like:", error);
 

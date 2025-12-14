@@ -34,7 +34,7 @@ export async function GetLatestFeed() {
             orderBy: {
                 createdAt: "desc"
             }
-        });
+        })
 
         await redis.set("latestfeed", getFeeds);
         await redis.expire("latestfeed", 120);

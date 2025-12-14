@@ -1,8 +1,0 @@
-{
-    "crons": [
-        {
-            "path": "/api/likes",
-            "schedule": "*/1 * * * *"
-        }
-    ] 
-}

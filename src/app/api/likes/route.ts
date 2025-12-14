@@ -19,6 +19,11 @@ export async function GET(request: Request) {
   const dislikesDelete: likesTypes[] = [];
 //   console.log("All keys : ", getAllKey);
 
+if(!getAllKey || getAllKey == null) return NextResponse.json(
+    { message: "redis is empty", status: true },
+    { status: 200 }
+  );;
+
   for (const [key, value] of Object.entries(getAllKey as any)) {
     const [feedId, authorId] = key.split(":");
 
